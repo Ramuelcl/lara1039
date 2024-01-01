@@ -17,9 +17,9 @@ use Illuminate\Support\Facades\{App, Artisan, File, Route};
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// })->name('home');
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -27,10 +27,8 @@ class UserSeeder extends Seeder
                 'email' => 'admin@mail.com',
                 'profile_photo_path' => 'public/images/avatars/admin.png',
                 'email_verified_at' => now(),
-                // 'password' => Hash::make('0Admin'), //bcrypt('0Admin')
-                'password' => 'Admin', //bcrypt('0Admin')
+                'password' => 'Admin', //bcrypt('Admin')
                 'remember_token' => Str::random(10),
-                // 'is_active' => 1,
             ],
             'guest' => [
                 'name' => 'guest',
@@ -39,7 +37,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => 'guest', //bcrypt('guest')
                 'remember_token' => Str::random(10),
-                // 'is_active' => 1,
             ],
         ];
 
