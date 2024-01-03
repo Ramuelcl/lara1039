@@ -66,4 +66,9 @@ class User extends Authenticatable
     {
         return $query->where('is_active', 1);
     }
+
+    public function r_roles()
+    {
+        return $this->belongsTo(Role::class);
+    }
 }

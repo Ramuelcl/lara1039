@@ -4,9 +4,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePerfilsTable extends Migration
-{
-    protected $table = 'perfiles';
+return new class extends Migration {
+    private $table = 'tablas';
 
     /**
      * Run the migrations.
@@ -18,26 +17,36 @@ class CreatePerfilsTable extends Migration
         Schema::disableForeignKeyConstraints();
 
         Schema::create($this->table, function (Blueprint $table) {
+            $table->bigInteger('tab_tabla');
+            $table->bigInteger('tab_id');
+            $table->string('tab_nombre', 45)->charset('utf8');
             $table
-                ->foreignId('user_id')
-                ->constrained()
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate()
-                ->primary();
-            $table->unsignedTinyInteger('edad');
+                ->string('tab_descripcion', 128)
+                ->nullable()
+                ->default(null)
+                ->charset('utf8');
             $table
-                ->unsignedTinyInteger('id_profesion')
+                ->boolean('is_active')
+                ->nullable()
+                ->default(true);
+            $table
+                ->enum('tab_tipoValor', ['integer', 'bigInteger', 'float', 'double', 'decimal', 'string', 'text', 'date', 'datetime', 'boolean', 'enum'])
                 ->nullable()
                 ->default(null);
             $table
-                ->longText('biografia')
+                ->string('tab_valor1', 256)
+                ->nullable()
                 ->default(null)
                 ->charset('utf8');
             $table
-                ->string('website', 128)
+                ->string('tab_valor2', 256)
+                ->nullable()
                 ->default(null)
                 ->charset('utf8');
+
             $table->softDeletes();
+            $table->primary(['tab_tabla', 'tab_id']);
+            $table->index('tab_nombre');
             $table->timestamps();
         });
 
@@ -53,4 +62,4 @@ class CreatePerfilsTable extends Migration
     {
         Schema::dropIfExists($this->table);
     }
-}
+};

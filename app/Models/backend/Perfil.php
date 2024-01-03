@@ -66,9 +66,9 @@ class Perfil extends Model
     public function profesion_rnd()
     {
         return Tabla::orderByRaw('RAND()')
-            ->where('tabla', 15000)
-            ->where('activo', true)
+            ->where('tab_tabla', 15000)
+            ->where('is_active', true)
             ->limit(1)
-            ->pluck('tabla_id');
+            ->pluck('tab_id');
     }
 }

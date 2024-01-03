@@ -17,16 +17,7 @@ class Tabla extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'tabla',
-        'tabla_id',
-        'nombre',
-        'descripcion',
-        'activo',
-        'valor1',
-        'valor2',
-        'valor3',
-    ];
+    protected $fillable = ['tab_tabla', 'tab_id', 'tab_nombre', 'tab_descripcion', 'is_active', 'tab_tipoValor', 'tab_valor1', 'tab_valor2'];
 
     /**
      * The attributes that should be cast to native types.
@@ -34,22 +25,18 @@ class Tabla extends Model
      * @var array
      */
     protected $casts = [
-        'tabla' => 'integer',
-        'tabla_id' => 'integer',
-        'activo' => 'boolean',
-        'valor1' => 'decimal:2',
-        'valor3' => 'boolean',
+        'tab_tabla' => 'integer',
+        'tab_id' => 'integer',
+        'is_active' => 'boolean',
+        'tab_tipoValor' => 'string',
+        'tab_valor1' => 'string',
+        'tab_valor2' => 'string',
     ];
 
     // para retornar el menu y sub-menu
     public function parent()
     {
-        return $this->belongsTo(
-            $related = 'App\Models\Backend\tablas',
-            $foreignKey = 'parent_id',
-            $ownerKey = "",
-            $relation = 'tabla=1000'
-        );
+        return $this->belongsTo($related = 'App\Models\Backend\tablas', $foreignKey = 'parent_id', $ownerKey = '', $relation = 'tabla=1000');
     }
 
     public function children()

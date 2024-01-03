@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
-    private $table = 'tablas';
+    protected $table = 'perfiles';
 
     /**
      * Run the migrations.
@@ -17,36 +17,26 @@ return new class extends Migration {
         Schema::disableForeignKeyConstraints();
 
         Schema::create($this->table, function (Blueprint $table) {
-            $table->bigInteger('tab_tabla');
-            $table->bigInteger('tab_id');
-            $table->string('tab_nombre', 45)->charset('utf8');
             $table
-                ->string('tab_descripcion', 128)
-                ->nullable()
-                ->default(null)
-                ->charset('utf8');
+                ->foreignId('user_id')
+                ->constrained()
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate()
+                ->primary();
+            $table->unsignedTinyInteger('edad');
             $table
-                ->boolean('is_active')
-                ->nullable()
-                ->default(true);
-            $table
-                ->enum('tab_tipoValor', ['integer', 'bigInteger', 'float', 'double', 'decimal', 'string', 'text', 'date', 'datetime', 'boolean', 'enum'])
+                ->unsignedTinyInteger('id_profesion')
                 ->nullable()
                 ->default(null);
             $table
-                ->string('tab_valor1', 256)
-                ->nullable()
+                ->longText('biografia')
                 ->default(null)
                 ->charset('utf8');
             $table
-                ->string('tab_valor2', 256)
-                ->nullable()
+                ->string('website', 128)
                 ->default(null)
                 ->charset('utf8');
-
             $table->softDeletes();
-            $table->primary(['tab_tabla', 'tab_id']);
-            $table->index('tab_nombre');
             $table->timestamps();
         });
 
