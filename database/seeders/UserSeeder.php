@@ -49,11 +49,11 @@ class UserSeeder extends Seeder
                 // $user->syncRoles(['super-admin']);
                 $theme = 'light';
                 $language = 'es-ES';
-            } elseif ($user['email'] === 'ramuelcl@gmail.com') {
-                // dump('creando ' . $user['name']);
-                $u->assignRole(['Super-Admin']);
-                $theme = 'light';
-                $language = 'es-ES';
+                // } elseif ($user['email'] === 'ramuelcl@gmail.com') {
+                //     // dump('creando ' . $user['name']);
+                //     $u->assignRole(['Super-Admin']); // ya no existe como Role
+                //     $theme = 'light';
+                //     $language = 'es-ES';
             } else {
                 $u->assignRole('guest');
                 $theme = 'dark';
@@ -83,17 +83,18 @@ class UserSeeder extends Seeder
         // factory(App\User::class, 25)->create()->each(function ($user) {
         //     $user->profile()->save(factory(App\UserProfile::class)->make());
         // });
+
         $array1 = ['light', 'dark'];
         $array2 = ['es-ES', 'fr-FR', 'en-EN'];
         // dd('llegó');
         $roles = Role::all()
             ->pluck('name')
             ->toArray();
-        $roles = array_diff($roles, ['Super-Admin']);
+        // $roles = array_diff($roles, ['Super-Admin']); // ya no existe
         $u = User::factory(69)
             ->create()
             ->each(function ($user) {
-                // dump($user);
+                // dump($user->id);
                 UserSetting::factory()->create([
                     'user_id' => $user->id,
                 ]);

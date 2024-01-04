@@ -202,9 +202,9 @@ class TablaSeeder extends Seeder
         ];
         //crea gastos
         $tabla[config('constantes.GASTOS')] = [
-            ['tab_nombre' => 'Compras', 'tab_tipoValor' => 'boolean', 'tab_valor1' => true], // suma
-            ['tab_nombre' => 'saldo anterior a descontar', 'tab_tipoValor' => 'boolean', 'tab_valor1' => false], // resta
-            ['tab_nombre' => 'saldo anterior a sumar', 'tab_tipoValor' => 'boolean', 'tab_valor1' => true], //suma
+            ['tab_nombre' => 'Compras', 'tab_tipoValor' => 'boolean', 'tab_valor1' => true, 'tab_valor2' => 'compras se suman a la factura para recuperar ese gasto'], // suma
+            ['tab_nombre' => 'saldo anterior a descontar', 'tab_tipoValor' => 'boolean', 'tab_valor1' => false, 'tab_valor2' => '-'], // resta
+            ['tab_nombre' => 'saldo anterior a sumar', 'tab_tipoValor' => 'boolean', 'tab_valor1' => true, 'tab_valor2' => '+'], //suma
         ];
 
         foreach ($tab_ind as $tab => $titulo) {
@@ -222,10 +222,12 @@ class TablaSeeder extends Seeder
                     $tab_nombre = $value['tab_nombre'];
                     $tab_tipoValor = $value['tab_tipoValor'];
                     $tab_valor1 = $value['tab_valor1'];
+                    $tab_valor2 = isset($value['tab_valor2']) ? $value['tab_valor2'] : null;
                 } else {
                     $tab_nombre = $value;
                     $tab_tipoValor = null;
                     $tab_valor1 = null;
+                    $tab_valor2 = null;
                 }
 
                 Tabla::create([
@@ -236,6 +238,7 @@ class TablaSeeder extends Seeder
                     'is_active' => true,
                     'tab_tipoValor' => $tab_tipoValor,
                     'tab_valor1' => $tab_valor1,
+                    'tab_valor2' => $tab_valor2,
                 ]);
             }
         }

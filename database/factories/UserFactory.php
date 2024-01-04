@@ -34,7 +34,7 @@ class UserFactory extends Factory /**
     public function definition(): array
     {
         $storage_path = 'public/images/avatars';
-        Storage::deleteDirectory($storage_path);
+        // Storage::deleteDirectory($storage_path);
 
         $name = $this->faker->lastName();
         $prename = $this->faker->unique()->firstName();
@@ -42,6 +42,7 @@ class UserFactory extends Factory /**
         $i = rand($min = 0, $max = 6);
         $seps = ['', '.', '_'];
         $sep = $seps[array_rand($seps)];
+        // dump($sep);
         if ($i == 0) {
             $email = "$name$sep$prename";
         } elseif ($i == 1) {

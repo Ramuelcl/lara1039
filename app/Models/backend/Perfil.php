@@ -13,7 +13,7 @@ class Perfil extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'perfiles';
-    protected $tabla = 15000;
+    protected $tabla = 10100;
     /**
      * The attributes that are mass assignable.
      *
@@ -65,10 +65,12 @@ class Perfil extends Model
     }
     public function profesion_rnd()
     {
-        return Tabla::orderByRaw('RAND()')
-            ->where('tab_tabla', 15000)
+        $paso = Tabla::orderByRaw('RAND()')
+            ->where('tab_tabla', $this->tabla)
             ->where('is_active', true)
             ->limit(1)
             ->pluck('tab_id');
+        // dd($paso);
+        return $paso;
     }
 }

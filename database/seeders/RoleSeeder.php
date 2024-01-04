@@ -11,7 +11,7 @@ class RoleSeeder extends Seeder
 {
     private $roles = [
         // tabla roles
-        ['Super-Admin', 'web'],
+        // ['Super-Admin', 'web'],
         ['admin', 'web'],
         ['user', 'web'],
         ['guest', 'web'],
@@ -27,10 +27,11 @@ class RoleSeeder extends Seeder
         'new',
         'edit',
         'delete',
-        'publish',
-        'unpublish',
         'printer',
         'export',
+        //
+        'publish',
+        'unpublish',
     ];
     /**
      * Run the database seeds.
@@ -56,18 +57,23 @@ class RoleSeeder extends Seeder
                 // });
             }
             $role = Role::create(['name' => $value[0], 'guard_name' => 'web']);
-
+            // dump('role', $role->name);
             // create permissions
             foreach ($this->permissions as $pvalue) {
                 // dump(['Role' => $value[0], 'Pers' => $pvalue]);
                 if ($value[1] === 'web') {
                     $name = $pvalue;
                 } else {
-                    $name = "$value[0] $pvalue";
+                    if ($value[0] !== 'Blog' && substr($pvalue, -7) === 'publish') {
+                        continue;
+                    } else {
+                        $name = "$value[0] $pvalue";
+                    }
                 }
 
                 if (!Permission::where('name', '=', "$name")->exists()) {
                     $permissions = Permission::create(['name' => "$name"]);
+                    // dump($permissions->name);
                 }
             }
         }
