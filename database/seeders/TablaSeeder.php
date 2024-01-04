@@ -196,7 +196,7 @@ class TablaSeeder extends Seeder
             ['tab_nombre' => 'Cliente', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
             ['tab_nombre' => 'Estado', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
             ['tab_nombre' => 'Etiqueta', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
-            ['tab_nombre' => 'Nota', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
+            ['tab_nombre' => 'Nota', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 0],
             ['tab_nombre' => 'Gastos', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
             ['tab_nombre' => 'Kilometraje', 'tab_tipoValor' => 'boolean', 'tab_valor1' => 1],
         ];
