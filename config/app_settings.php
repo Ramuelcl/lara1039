@@ -1,194 +1,12 @@
 <?php
 // config/app_settings.php
 return [
+    // sistema
     'logo' => 'storage/images/app/guzanet.png',
-    'titulo' => 'Guzanet',
-    'Vers' => '1.0.1',
+    'nombreEmpresa' => 'Guzanet.',
+    'Version' => '1.0.2',
 
-    'menus' => [
-        // JobTime 30000
-        [
-            'id' => 30000,
-            'nombre' => 'JobTime',
-            'url' => null,
-            'is_active' => true,
-            'icon' => 'chevron-down',
-            'submenu' => [
-                [
-                    'id' => 30100,
-                    'nombre' => 'Clientes',
-                    'url' => '/JobTime/clientes',
-                    'is_active' => true,
-                    'icon' => 'collection',
-                    // 'submenu' => [
-                    //     [
-                    //         'nombre' => 'Nuevo',
-                    //         'url' => '/JobTime/clientes/new',
-                    //         'is_active' => true,
-                    //         'icon' => 'collection',
-                    //     ], [
-                    //         'nombre' => 'Editar',
-                    //         'url' => '/JobTime/clientes/edit',
-                    //         'is_active' => true,
-                    //         'icon' => 'collection',
-                    //     ], [
-                    //         'nombre' => 'Eliminar',
-                    //         'url' => '/JobTime/clientes/delete',
-                    //         'is_active' => true,
-                    //         'icon' => 'collection',
-                    //     ],
-                    // ],
-                ],
-                [
-                    'id' => 30200,
-                    'nombre' => 'Proyecto',
-                    'url' => '/JobTime/proyecto',
-                    'is_active' => true,
-                    'icon' => 'chart-square-bar',
-                ],
-            ],
-        ],
-
-        // Banca 50000
-        [
-            'id' => 50000,
-            'nombre' => 'Banca',
-            'url' => null,
-            'is_active' => true,
-            'icon' => 'chevron-down',
-            'submenu' => [
-                [
-                    'id' => 50100,
-                    'nombre' => 'Traspasos',
-                    'url' => '/banca/traspasos',
-                    'is_active' => true,
-                    'icon' => 'cloud-download',
-                ],
-                [
-                    'id' => 50200,
-                    'nombre' => 'Clientes',
-                    'url' => '/banca/clientes',
-                    'is_active' => true,
-                    'icon' => 'collection',
-                ],
-            ],
-        ],
-        // Blog 60000
-        [
-            'id' => 60000,
-            'nombre' => 'Blog',
-            'url' => '/blog',
-            'is_active' => true,
-            'icon' => 'annotation',
-        ],
-        //
-        // Tablas 1000
-        [
-            'id' => 1000,
-            'nombre' => 'Tablas',
-            'url' => null,
-            'is_active' => true,
-            'icon' => 'chevron-down',
-            'submenu' => [
-                [
-                    'id' => 1100,
-                    'nombre' => 'Categorias',
-                    'url' => '/categorias',
-                    'is_active' => true,
-                    'icon' => 'tag',
-                ],
-                [
-                    'id' => 1200,
-                    'nombre' => 'Marcadores',
-                    'url' => '/marcadores',
-                    'is_active' => true,
-                    'icon' => 'bookmark',
-                ],
-                [
-                    'id' => 1300,
-                    'nombre' => 'Proyecto',
-                    'url' => '/tablas/13000',
-                    'is_active' => true,
-                    'icon' => 'information-circle',
-                ],
-                [
-                    'id' => 1500,
-                    'nombre' => 'Configuraciones',
-                    'url' => '/tablas',
-                    'is_active' => true,
-                    'icon' => 'cog',
-                ],
-                [
-                    'id' => 1600,
-                    'nombre' => 'Banca - cuentas',
-                    'url' => '/tablas/50000',
-                    'is_active' => true,
-                    'icon' => 'currency-euro',
-                ],
-                [
-                    'id' => 1700,
-                    'nombre' => 'Iconos',
-                    'url' => '/iconos',
-                    'is_active' => true,
-                    'icon' => 'information-circle',
-                ],
-                [
-                    'id' => 1800,
-                    'nombre' => 'To Do',
-                    'url' => '/todo',
-                    'is_active' => true,
-                    'icon' => 'information-circle',
-                ],
-                [
-                    'id' => 1900,
-                    'nombre' => '',
-                    'url' => '/',
-                    'is_active' => false,
-                    'icon' => 'information-circle',
-                ],
-            ],
-        ],
-        // Usuarios
-        [
-            'id' => 2000,
-            'nombre' => 'Usuarios',
-            'url' => null,
-            'is_active' => true,
-            'icon' => 'users',
-            'submenu' => [
-                [
-                    'id' => 2100,
-                    'nombre' => 'Usuarios',
-                    'url' => '/admin/usuarios',
-                    'is_active' => true,
-                    'icon' => 'user',
-                ],
-                [
-                    'id' => 2200,
-                    'nombre' => 'Roles',
-                    'url' => '/admin/roles',
-                    'is_active' => false,
-                    'icon' => 'cube',
-                ],
-                [
-                    'id' => 2300,
-                    'nombre' => 'Permisos',
-                    'url' => '/admin/permisos',
-                    'is_active' => true,
-                    'icon' => 'cube-transparent',
-                ],
-            ],
-        ],
-        // acerca de...
-        [
-            'id' => 3000,
-            'nombre' => 'Acerca de',
-            'url' => '/acercade',
-            'is_active' => true,
-            'icon' => 'heart',
-        ],
-        // Agrega más elementos de menú según sea necesario
-    ],
+    // definiendo estructura de categorias
     'codigo_categorias' => 2000,
     'niveles_categorias' => 3,
     'categorias' => [
@@ -245,6 +63,167 @@ return [
                     ],
                 ],
             ],
+        ],
+    ],
+
+    // menu
+    'menu' => [
+        // JobTime
+        [
+            'name' => 'JobTime',
+            'url' => null,
+            'is_active' => true,
+            'icon' => 'chevron-down',
+            'submenu' => [
+                [
+                    'name' => 'Clientes',
+                    'url' => '/JobTime/clientes',
+                    'icon' => 'collection',
+                    'is_active' => true,
+                    'submenu' => [
+                        [
+                            'name' => 'Nuevo',
+                            'url' => '/JobTime/clientes/new',
+                            'icon' => 'collection',
+                            'is_active' => true,
+                        ],
+                        [
+                            'name' => 'Editar',
+                            'icon' => 'collection',
+                            'url' => '/JobTime/clientes/edit',
+                            'is_active' => true,
+                        ],
+                        [
+                            'name' => 'Eliminar',
+                            'url' => '/JobTime/clientes/delete',
+                            'icon' => 'collection',
+                            'is_active' => true,
+                        ],
+                    ],
+                ],
+                [
+                    'name' => 'Proyecto',
+                    'url' => '/JobTime/proyecto',
+                    'icon' => 'chart-square-bar',
+                    'is_active' => true,
+                ],
+            ],
+        ],
+
+        // Banca
+        [
+            'name' => 'Banca',
+            'url' => null,
+            'icon' => 'chevron-down',
+            'is_active' => true,
+            'submenu' => [
+                [
+                    'name' => 'Traspasos',
+                    'url' => '/banca/traspasos',
+                    'icon' => 'cloud-download',
+                    'is_active' => true,
+                ],
+                [
+                    'name' => 'Clientes',
+                    'url' => '/banca/clientes',
+                    'icon' => 'collection',
+                    'is_active' => true,
+                ],
+            ],
+        ],
+        // Blog
+        [
+            'name' => 'Blog',
+            'url' => '/blog',
+            'icon ' => 'annotation',
+            'is_active' => true,
+        ],
+        //dashboard
+        [
+            'name' => 'dashboard',
+            'url' => '/admin',
+            'icon' => 'chevron-down',
+            'is_active' => true,
+            'submenu' => [
+                [
+                    'name' => 'Categorias',
+                    'url' => '/categorias',
+                    'icon' => 'tag',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Marcadores',
+                    'url' => '/marcadores',
+                    'icon' => 'bookmark',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Proyecto',
+                    'url' => '/tablas/13000',
+                    'icon' => 'information-circle',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Configuraciones',
+                    'url' => '/tablas',
+                    'icon' => 'cog',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Banca - cuentas',
+                    'url' => '/tablas/50000',
+                    'icon' => 'currency-euro',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Iconos',
+                    'url' => '/iconos',
+                    'icon' => 'information-circle',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'To Do',
+                    'url' => '/todo',
+                    'icon' => 'information-circle',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Usuarios',
+                    'url' => '/admin/usuarios',
+                    'icon' => 'user',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Roles',
+                    'url' => '/admin/roles',
+                    'icon' => 'cube',
+                    'is_active' => false,
+                    'vertical' => true,
+                ],
+                [
+                    'name' => 'Permisos',
+                    'url' => '/admin/permisos',
+                    'icon' => 'cube-transparent',
+                    'is_active' => true,
+                    'vertical' => true,
+                ],
+            ],
+            // acerca de...
+            [
+                'name' => 'Acerca de',
+                'url' => '/acercade',
+                'icon' => 'heart',
+                'is_active' => true,
+            ],
+            // Agrega más elementos de menú según sea necesario
         ],
     ],
 ];

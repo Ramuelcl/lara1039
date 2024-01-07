@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-tw_auth-card>
         <x-slot name="logo">
-            <a href="/">
+            <a href="{{ route('Home') }}">
                 <x-application-logo class="w-14 h-14 rounded" />
             </a>
         </x-slot> <!-- Session Status -->

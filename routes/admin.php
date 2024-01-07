@@ -5,11 +5,18 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 
-Route::middleware(['auth', 'verified']) //'role:admin'
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified']) //'verified-role:admin'
     ->name('admin.')
     ->prefix('admin')
     ->group(function () {
-        Route::get('/', [IndexController::class, 'index'])->name('index');
+        // Route::get('/', [IndexController::class, 'index'])->name('admin');
+        Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
         Route::resource('/roles', RoleController::class);
         Route::post('/roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions');
         Route::delete('/roles/{role}/permissions/{permission}', [RoleController::class, 'revokePermission'])->name('roles.permissions.revoke');
@@ -24,9 +31,3 @@ Route::middleware(['auth', 'verified']) //'role:admin'
         Route::post('/users/{user}/permissions', [UserController::class, 'givePermission'])->name('users.permissions');
         Route::delete('/users/{user}/permissions/{permission}', [UserController::class, 'revokePermission'])->name('users.permissions.revoke');
     });
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});

@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             TablaSeeder::class,
+            menuSeeder::class,
             //
             // PaisSeeder::class,
             // DireccionSeeder::class,

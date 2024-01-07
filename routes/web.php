@@ -2,30 +2,47 @@
 
 // use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\{App, Artisan, File, Route};
+use App\livewire\liveMenu;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// use App\Http\Controllers\ProfileController;
 
+// Route::middleware('auth')->group(function () {
+//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+// });
+
+Route::get('/blog', function () {
+    return 'blog';
+})->name('blog');
+// Route::get('/admin', function () {
+//     return 'admin';
+// })->name('admin');
+
+// se redirige
+// Route::redirect('/ancien', '/');
+// se redirigen en forma permanente
+// Route::redirect('/ancien', '/', 301);
+Route::permanentRedirect('/ancien', '/');
+
+// llamo la vista con una función anónima
 Route::get('/', function () {
     return view('welcome');
-})->name('home');
+})->name('Home');
+// llamo la vista con parámetros
+Route::get('/user/{id}/{name}', function ($id, $name) {
+    return view('welcome');
+})->name('users.nombre');
+
+// llamo directamente a la vista
+Route::view('/contact', 'Contact')->name('contact');
+// con parámetros
+// Route::view('/contact', 'Contact', ['name' => 'Ramuel'])->name('contact');
 
 Route::group([], function () {
-    Route::get('/', function () {
-        return view('welcome');
-    })->name('Home');
-
-    Route::get('/prueba', function () {
-        return 'prueba';
-    })->name('prueba');
+    // Route::get('/prueba', function () {
+    //     return 'prueba';
+    // })->name('prueba');
 
     Route::get('/storagelink', function () {
         // Crear el enlace simbólico

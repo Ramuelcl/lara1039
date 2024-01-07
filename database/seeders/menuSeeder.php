@@ -2,12 +2,12 @@
 // database/seeders/menuSeeder.php
 namespace Database\Seeders;
 
-use App\Models\backend\Tabla;
+use App\Models\backend\Menu;
 use Illuminate\Database\Seeder;
 
-class MenuSeeder extends Seeder
+class menuSeeder extends Seeder
 {
-    public $menu = 1000;
+    public $menu = 10000;
     public static $ind = 0;
     public static $saltoInd = 100;
     public static $ultimoInd;
@@ -26,45 +26,39 @@ class MenuSeeder extends Seeder
         if ($parentId === null) {
             // la primera vez que entra
             // carga menu si existe, si no, genera Inicio por defecto
-            $menuItems = config('app_settings.menus', [
-                'nombre' => 'Inicio',
+            $menuItems = config('app_settings.menu', [
+                'name' => __('Home'),
                 'url' => '/',
-                'is_active' => true,
                 'icon' => 'home',
+                'is_active' => true,
             ]);
 
-            $menu = Tabla::create([
-                'tabla' => $this->menu,
-                'tabla_id' => 0,
-                'nombre' => 'menus del sistema',
+            $menu = Menu::create([
+                'name' => 'menu principal del sistema',
                 'is_active' => false,
-                'valor0' => null,
-                'valor1' => null,
-                'valor2' => null,
-                'valor3' => null,
             ]);
         }
+
         $menuItems = $subMenu ?: $menuItems;
+        dump($menuItems);
         $saltoInd = $subMenu ? 50 : 1000;
 
         foreach ($menuItems as $menuItem) {
             static::$ind += $saltoInd;
 
-            $menu = Tabla::create([
-                'tabla' => $this->menu,
-                'tabla_id' => $menuItem['id'] ?? static::$ind,
-                'nombre' => $menuItem['nombre'],
+            $menu = Menu::create([
+                'parent_id' => $parentId,
+                'name' => $menuItem['name'],
+                'url' => $menuItem['url'] ?? null,
+                'icon' => $menuItem['icon'] ?? null,
                 'is_active' => $menuItem['is_active'] ?? false,
-                'valor0' => $menuItem['url'] ?? null,
-                'valor1' => $parentId,
-                'valor2' => $menuItem['icon'] ?? null,
-                'valor3' => null,
+                'vertical' => $menuItem['vertical'] ?? false,
             ]);
 
             // carga subMenu si existe, lectura recursiva
             if (isset($menuItem['submenu'])) {
-                $this->createMenuItems($menu->tabla_id, $menuItem['submenu']);
-                static::$ind = $menu->tabla_id;
+                $this->createMenuItems($menu->id, $menuItem['submenu']);
+                static::$ind = $menu->id;
             }
         }
     }

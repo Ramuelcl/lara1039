@@ -7,15 +7,14 @@
 <body class="bg-gray-200 dark:bg-gray-800">
     @include('includes.header')
 
-    @include('includes.messages')
 
-    <div class="flex-col w-full md:flex md:flex-row md:min-h-screen">
+    <div class="mt-[88px] flex-col w-full md:flex md:flex-row md:min-h-screen">
+        @include('includes.messages')
         <div @click.away="open = false"
             class="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64 dark-mode:text-gray-200 dark-mode:bg-gray-800"
             x-data="{ open: false }">
             <div class="flex flex-row items-center justify-between flex-shrink-0 px-8 py-4">
-                <a href="/"
-                    class="text-lg font-semibold tracking-widest text-gray-900 uppercase rounded-lg dark-mode:text-white focus:outline-none focus:shadow-outline">{{ __($NombreEmpresa ?? 'Guzanet') }}</a>
+
                 <button id="theme-toggle" data-tooltip-target="tooltip-toggle" type="button"
                     class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5">
                     <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20"

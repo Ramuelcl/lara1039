@@ -1,6 +1,6 @@
 <!-- Contenido del archivo header.blade.php -->
 <header class="bg-gray-100 dark:bg-gray-950">
-    <nav class="flex items-center justify-between flex-wrap p-6 fixed w-full z-10 top-0" x-data="{ isOpen: false }"
+    <nav class="flex items-center justify-between flex-wrap fixed w-full z-10 top-0" x-data="{ isOpen: false }"
         @keydown.escape="isOpen = false"
         :class="{
             'shadow-gray-600 dark:shadow-gray-100 bg-gray-100 dark:bg-gray-800': isOpen,
@@ -9,14 +9,15 @@
         }">
         <!--Logo etc-->
         <div class="flex items-center flex-shrink-0 text-gray-200 dark:text-gray-800 mr-6">
-            <a href="/">
-                {{-- {{ route('home') }} --}}
-                <x-application-logo class="mr-2" />
+            <a href="{{ route('Home') }}" class="mx-4">
+                <x-application-logo />
             </a>
             <a class="text-gray-800 dark:text-gray-200 hover:text-gray-400 hover:dark:text-gray-400 no-underline hover:no-underline"
-                href="/">
-                {{-- {{ route('home') }} --}}
-                <span class="ml-2">{{ __($NombreEmpresa ?? 'Guzanet') }}</span>
+                href="{{ route('Home') }}">
+                @php
+                    $nombreEmpresa = config('app_settings.nombreEmpresa');
+                @endphp
+                <span class="ml-2">{{ __($nombreEmpresa ?? 'Guzanet') }}</span>
             </a>
         </div>
 
@@ -33,22 +34,20 @@
         </button>
 
         <!--Menu-->
-        @php
-            $menus = [['Titulo' => 'Dashboard', 'Route' => 'dashboard', 'disabled' => 0, 'active' => 1], ['Titulo' => 'Admin', 'Route' => 'admin', 'disabled' => 0, 'active' => 1]];
 
-        @endphp
         <div class="w-full flex-grow lg:flex lg:items-center lg:w-auto"
             :class="{ 'block shadow-3xl': isOpen, 'hidden': !isOpen }" @click.away="isOpen = false"
             x-show.transition="true">
             {{-- menu --}}
-            <ul class="pt-6 lg:pt-0 list-reset lg:flex justify-end flex-1 items-center">
-                @foreach ($menus as $menu)
+            <ul class="mx-4 pt-6 lg:pt-0 list-reset lg:flex justify-end flex-1 items-center">
+                @livewire('livemenu')
+                {{-- @foreach ($menus as $menu)
                     <li class="mr-3">
                         <x-nav-link :href="route($menu['Route'])" :active="request()->routeIs($menu['Route'])">
                             {{ __($menu['Titulo']) }}
                         </x-nav-link>
                     </li>
-                @endforeach
+                @endforeach --}}
                 {{-- Login / usuario-logout --}}
                 <!-- Right Side Of Navbar -->
                 <!-- button Dark/light -->

@@ -87,14 +87,20 @@ class UserSeeder extends Seeder
         $array1 = ['light', 'dark'];
         $array2 = ['es-ES', 'fr-FR', 'en-EN'];
         // dd('llegó');
-        $roles = Role::all()
-            ->pluck('name')
-            ->toArray();
+        // $roles = Role::all()
+        //     ->pluck('name')
+        //     ->toArray();
         // $roles = array_diff($roles, ['Super-Admin']); // ya no existe
         $u = User::factory(69)
             ->create()
             ->each(function ($user) {
                 // dump($user->id);
+                $role = Role::orderByRaw('RAND()')
+                    ->limit(1)
+                    ->pluck('name');
+                // You can also assign multiple roles at once
+                $user->assignRole($role);
+
                 UserSetting::factory()->create([
                     'user_id' => $user->id,
                 ]);
