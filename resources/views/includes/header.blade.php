@@ -1,6 +1,6 @@
 <!-- Contenido del archivo header.blade.php -->
-<header class="bg-gray-100 dark:bg-gray-950">
-    <nav class="flex items-center justify-between flex-wrap fixed w-full z-10 top-0" x-data="{ isOpen: false }"
+<header class="bg-gray-200 dark:bg-gray-700 h-12">
+    <nav class="h-12 flex items-center justify-between flex-wrap fixed w-full z-10 top-0" x-data="{ isOpen: false }"
         @keydown.escape="isOpen = false"
         :class="{
             'shadow-gray-600 dark:shadow-gray-100 bg-gray-100 dark:bg-gray-800': isOpen,

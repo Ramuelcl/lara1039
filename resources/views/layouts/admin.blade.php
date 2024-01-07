@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- resources/views/layouts/admin.blade.php -->
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 @include('includes.head') <!-- Incluir el head -->
 
@@ -8,7 +8,7 @@
     @include('includes.header')
 
 
-    <div class="mt-[88px] flex-col w-full md:flex md:flex-row md:min-h-screen">
+    <div class="flex-col w-full md:flex md:flex-row md:min-h-screen">
         @include('includes.messages')
         <div @click.away="open = false"
             class="flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64 dark:text-gray-200 dark:bg-gray-800"
@@ -54,7 +54,6 @@
         </div>
 
         <div class="flex w-full bg-slate-50 ">
-
             {{ $slot ?? null }}
         </div>
     </div>

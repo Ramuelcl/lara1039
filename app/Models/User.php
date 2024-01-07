@@ -64,7 +64,11 @@ class User extends Authenticatable
     }
     public function scopeActive($query)
     {
-        return $query->where('is_active', 1);
+        return $query->where('is_active', true);
+    }
+    public function Activo()
+    {
+        return $this->where('is_active', true);
     }
 
     public function r_roles()

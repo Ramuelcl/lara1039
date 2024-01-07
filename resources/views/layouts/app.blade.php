@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- resources/views/layouts/app.blade.php -->
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
 
 @include('includes.head') <!-- Incluir el head -->
 
@@ -8,7 +8,7 @@
     @include('includes.header')
 
     <!--Container for content-->
-    <div class="lg:pt-[100px] container shadow-lg mx-auto bg-white md:mt-18">
+    <div class="shadow-lg mx-auto bg-gray-200 dark:bg-gray-800 md:mt-18">
         @include('includes.messages')
         {{ $slot ?? null }}
     </div>
