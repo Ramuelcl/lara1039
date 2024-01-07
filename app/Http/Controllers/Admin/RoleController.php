@@ -9,6 +9,12 @@ use Spatie\Permission\Models\Role;
 
 class RoleController extends Controller
 {
+    public function show()
+    {
+        $roles = Role::whereNotIn('name', ['admin'])->get();
+        return view('admin.roles.index', compact('roles'));
+    }
+
     public function index()
     {
         $roles = Role::whereNotIn('name', ['admin'])->get();

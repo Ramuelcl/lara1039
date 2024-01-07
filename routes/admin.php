@@ -17,7 +17,9 @@ Route::middleware(['auth', 'verified']) //'verified-role:admin'
     ->group(function () {
         // Route::get('/', [IndexController::class, 'index'])->name('admin');
         Route::get('/dashboard', [IndexController::class, 'index'])->name('dashboard');
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles');
         Route::resource('/roles', RoleController::class);
+
         Route::post('/roles/{role}/permissions', [RoleController::class, 'givePermission'])->name('roles.permissions');
         Route::delete('/roles/{role}/permissions/{permission}', [RoleController::class, 'revokePermission'])->name('roles.permissions.revoke');
         Route::resource('/permissions', PermissionController::class);

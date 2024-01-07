@@ -9,6 +9,12 @@ use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
+    public function show()
+    {
+        $permissions = Permission::all();
+        return view('admin.permissions.index', compact('permissions'));
+    }
+
     public function index()
     {
         $permissions = Permission::all();

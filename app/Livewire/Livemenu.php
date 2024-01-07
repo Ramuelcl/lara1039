@@ -9,16 +9,19 @@ class Livemenu extends Component
 {
     public $menus;
     public $selectedMenuId;
-    public $orientation = false; // vertical=false; horizontal=true
+    public $orientation = true; // vertical=false; horizontal=true
+    public $submenu;
     public $currentLocale;
     public $table = 'menus';
-
     public function render()
     {
+        if ($this->submenu) {
+            $this->menus = $this->searchSubMenu($this->submenu);
+        }
         return view('livewire.livemenu');
     }
 
-    public function mount($orientation = true)
+    public function mount($orientation = true, $submenu = null)
     {
         $menus = Menu::where('id', '>', 1)
             ->whereNull('parent_id')
@@ -54,6 +57,7 @@ class Livemenu extends Component
 
         // dd($this->menus);
         $this->toggleOrientation($orientation);
+        $this->submenu = $submenu;
     }
 
     public function toggleOrientation($orientation)
