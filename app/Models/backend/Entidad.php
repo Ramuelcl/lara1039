@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Entidad extends Model
 {
     use HasFactory, SoftDeletes;
+    protected $table = 'Entidades';
 
     /**
      * The attributes that aren't mass assignable.
@@ -44,7 +45,6 @@ class Entidad extends Model
      *
      * @var string
      */
-    protected $table = 'Entidades';
 
     public function tabla()
     {

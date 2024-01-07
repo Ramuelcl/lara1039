@@ -14,10 +14,18 @@ class CreateEmailsTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
-            $table->string('mail');
+            $table
+                ->unsignedBigInteger('entidad_id')
+                ->constrained('entidades')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->string('email');
             $table->timestamps();
+            Schema::enableForeignKeyConstraints();
         });
     }
 
@@ -28,6 +36,8 @@ class CreateEmailsTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists($this->table);
+        Schema::enableForeignKeyConstraints();
     }
 }

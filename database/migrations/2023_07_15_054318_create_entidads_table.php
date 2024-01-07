@@ -14,15 +14,14 @@ class CreateEntidadesTable extends Migration
      */
     public function up()
     {
+        Schema::disableForeignKeyConstraints();
+
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
             $table->string('razonSocial');
             $table->string('nombres');
             $table->string('apellidos');
             $table->boolean('is_active')->default(true);
-            $table->unsignedBigInteger('email_id');
-            $table->unsignedBigInteger('direccion_id');
-            $table->unsignedBigInteger('telefono_id');
             $table->enum('tipo', ['cliente', 'vendedor', 'perfil']);
             $table->timestamps();
 
@@ -42,6 +41,7 @@ class CreateEntidadesTable extends Migration
                 ->on('telefonos')
                 ->onDelete('cascade');
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
@@ -51,6 +51,8 @@ class CreateEntidadesTable extends Migration
      */
     public function down()
     {
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists($this->table);
+        Schema::enableForeignKeyConstraints();
     }
 }
