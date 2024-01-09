@@ -17,7 +17,7 @@ class MarcadorFactory extends Factory
      * @var string
      */
     protected $model = Marcador::class;
-
+    public $table = 'marcadores';
     /**
      * Define the model's default state.
      *
@@ -31,38 +31,25 @@ class MarcadorFactory extends Factory
 
     public function fncCrearColores()
     {
-        Storage::deleteDirectory('images/avatars');
-        Storage::makeDirectory('images/avatars');
-        $filePath = 'images/avatars/';
+        // $filePath = 'images/avatars/';
+        // Storage::deleteDirectory($filePath);
+        // Storage::makeDirectory($filePath);
         // dump($filePath);
 
         $colores = $this->colores();
-        foreach ($colores as $key => $v) {
-            // $v = $colores[$this->i];
-
-            $nombre = Str::title($v['name']);
-            $babosa = Str::slug($v['name']);
-            $hexa = '#' . $v['hexa'];
-            $rgb = $v['rgb'];
+        foreach ($colores as $key => $value) {
+            $nombre = Str::title($value['name']);
+            $babosa = Str::slug($value['name']);
+            $hexa = '#' . $value['hexa'];
+            $rgb = $value['rgb'];
             $metadata = json_encode([$nombre, $hexa, $rgb]);
-            $activo = (int)$this->faker->boolean($chanceOfGettingTrue = 70);
+            $activo = (int) $this->faker->boolean($chanceOfGettingTrue = 70);
             // dd($activo, $metadata);
-            $imagen = 'colores/' . $this->faker->image($dir = $filePath, $width = 640, $height = 480, $category = null, $word = false);
-            // $imagen = $this->faker->imageUrl(640, 480, null, false);
 
-            // dump(['i' => $this->i, 'colores son:' => count($colores), $imagen, $imagen1]);
-            // dd(['this' => $this, 'imagen' => $imagen]);
-
-            // Storage::put('images', $imagen);
-
-            //            $sql = "INSERT INTO marcadores (`nombre`,`babosa`,`hexa`,`rgb`,`metadata`,`imagen`) VALUES (
-            //                '$nombre', '$babosa', '$hexa', '$rgb', '$metadata', '$imagen'
-            //            );";
-            $sql = "INSERT INTO marcadores (`nombre`,`babosa`,`hexa`,`rgb`,`metadata`, `activo`) VALUES (
+            $sql = "INSERT INTO marcadores (`nombre`,`babosa`,`hexa`,`rgb`,`metadata`, `is_active`) VALUES (
                 '$nombre', '$babosa', '$hexa', '$rgb', '$metadata', '$activo');";
 
             DB::statement($sql);
-            // $this->i++;
         }
         return;
     }

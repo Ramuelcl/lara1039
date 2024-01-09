@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEntidadesTable extends Migration
-{
+return new class extends Migration {
     protected $table = 'entidades';
     /**
      * Run the migrations.
@@ -22,24 +21,26 @@ class CreateEntidadesTable extends Migration
             $table->string('nombres');
             $table->string('apellidos');
             $table->boolean('is_active')->default(true);
-            $table->enum('tipo', ['cliente', 'vendedor', 'perfil']);
-            $table->timestamps();
-
+            $table->enum('tipo', ['cliente', 'vendedor', 'perfil', 'JobTime']);
+            $table->unsignedBigInteger('email_id');
             $table
                 ->foreign('email_id')
                 ->references('id')
                 ->on('emails')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('direccion_id');
             $table
                 ->foreign('direccion_id')
                 ->references('id')
                 ->on('direcciones')
                 ->onDelete('cascade');
+            $table->unsignedBigInteger('telefono_id');
             $table
                 ->foreign('telefono_id')
                 ->references('id')
                 ->on('telefonos')
                 ->onDelete('cascade');
+            $table->timestamps();
         });
         Schema::enableForeignKeyConstraints();
     }
@@ -51,8 +52,6 @@ class CreateEntidadesTable extends Migration
      */
     public function down()
     {
-        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists($this->table);
-        Schema::enableForeignKeyConstraints();
     }
-}
+};

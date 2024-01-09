@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateEmailsTable extends Migration
-{
+return new class extends Migration {
     protected $table = 'emails';
     /**
      * Run the migrations.
@@ -18,13 +17,22 @@ class CreateEmailsTable extends Migration
 
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
+            $table->enum('tipo1')->default('email'); // email, site web
+            $table->enum('tipo2')->default('personal'); // personal, trabajo, otro
+            $table->unsignedBigInteger('entidad_id');
+            $table->unsignedBigInteger('email_id');
+            $table->unique(['entidad_id', 'email_id']);
             $table
-                ->unsignedBigInteger('entidad_id')
-                ->constrained('entidades')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-            $table->string('email');
-            $table->timestamps();
+                ->foreign('entidad_id')
+                ->references('id')
+                ->on('entidades')
+                ->onDelete('cascade');
+            $table
+                ->foreign('email_id')
+                ->references('id')
+                ->on('emails')
+                ->onDelete('cascade');
+
             Schema::enableForeignKeyConstraints();
         });
     }
@@ -40,4 +48,4 @@ class CreateEmailsTable extends Migration
         Schema::dropIfExists($this->table);
         Schema::enableForeignKeyConstraints();
     }
-}
+};

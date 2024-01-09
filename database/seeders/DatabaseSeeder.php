@@ -65,14 +65,14 @@ class DatabaseSeeder extends Seeder
             // PaisSeeder::class,
             // DireccionSeeder::class,
             // TelefonoSeeder::class,
-            // CategoriaSeeder::class,
-            // MarcadorSeeder::class,
+            CategoriaSeeder::class,
+            MarcadorSeeder::class,
             //
             RoleSeeder::class,
             UserSeeder::class,
             //
+            EntidadSeeder::class,
             // BancaSeeder::class,
-            // CompteSeeder::class,
             // MouvementSeeder::class,
             // CursoSeeder::class,
             // ClientSeeder::class,

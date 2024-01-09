@@ -16,6 +16,7 @@ return new class extends Migration
 
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
+            $table->integer('tipo'); // 1=personal, 2=trabajo, 3=otro
             $table->foreignId('entidad_id')->constrained('entidades')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('ciudad_id')->constrained('ciudades')->cascadeOnDelete()->cascadeOnUpdate()->default(0);
             $table->string('direccion', 128)->charset('utf8mb4');

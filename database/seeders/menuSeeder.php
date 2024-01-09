@@ -40,7 +40,7 @@ class menuSeeder extends Seeder
         }
 
         $menuItems = $subMenu ?: $menuItems;
-        dump($menuItems);
+        // dump($menuItems);
         $saltoInd = $subMenu ? 50 : 1000;
 
         foreach ($menuItems as $menuItem) {

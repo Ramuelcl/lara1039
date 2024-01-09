@@ -57,7 +57,7 @@ class TablaSeeder extends Seeder
         $tabla[config('constantes.TIPO_EMAIL')] = ['particular', 'empresa', 'otro'];
 
         //crea tipo de entidad
-        $tabla[config('constantes.TIPO_ENTIDAD')] = ['Perfil', 'Cliente', 'Vendedor', 'Cli_Vend'];
+        $tabla[config('constantes.TIPO_ENTIDAD')] = ['Perfil', 'Cliente', 'Vendedor', 'Cli_Vend', 'HoraTrabajo'];
 
         $tabla[config('constantes.OTRO')] = ['1', '2', '3'];
 
