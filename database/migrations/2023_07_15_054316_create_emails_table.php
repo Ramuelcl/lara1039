@@ -17,24 +17,12 @@ return new class extends Migration {
 
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
-            $table->enum('tipo1')->default('email'); // email, site web
-            $table->enum('tipo2')->default('personal'); // personal, trabajo, otro
-            $table->unsignedBigInteger('entidad_id');
-            $table->unsignedBigInteger('email_id');
-            $table->unique(['entidad_id', 'email_id']);
-            $table
-                ->foreign('entidad_id')
-                ->references('id')
-                ->on('entidades')
-                ->onDelete('cascade');
-            $table
-                ->foreign('email_id')
-                ->references('id')
-                ->on('emails')
-                ->onDelete('cascade');
-
-            Schema::enableForeignKeyConstraints();
+            $table->enum('tipo1', ['mail', 'web'])->default('mail'); // email, site web
+            $table->enum('tipo2', ['personal', 'trabajo', 'otro'])->default('personal'); // personal, trabajo, otro
+            $table->string('email');
+            $table->timestamps();
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
