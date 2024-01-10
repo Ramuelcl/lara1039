@@ -1,0 +1,74 @@
+-- --------------------------------------------------------
+-- Host:                         localhost
+-- Versión del servidor:         5.7.24 - MySQL Community Server (GPL)
+-- SO del servidor:              Win64
+-- HeidiSQL Versión:             11.3.0.6295
+-- --------------------------------------------------------
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET NAMES utf8 */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+-- Volcando estructura de base de datos para basic
+CREATE DATABASE IF NOT EXISTS `basic` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `basic`;
+
+-- Volcando estructura para tabla basic.clientes
+CREATE TABLE IF NOT EXISTS `clientes` (
+  `id` bigint(20) DEFAULT NULL,
+  `tipo` enum('perfil','cliente','proveedor','cli_pro') NOT NULL,
+  `razonSocial` varchar(128) DEFAULT NULL,
+  `nombres` varchar(80) NOT NULL,
+  `apellidos` varchar(80) DEFAULT NULL,
+  `activo` tinyint(1) NOT NULL DEFAULT '0',
+  `eMail` varchar(191) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  UNIQUE KEY `entidads_email_unique` (`eMail`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+
+-- Volcando datos para la tabla basic.clientes: ~32 rows (aproximadamente)
+/*!40000 ALTER TABLE `clientes` DISABLE KEYS */;
+INSERT INTO `clientes` (`id`, `tipo`, `razonSocial`, `nombres`, `apellidos`, `activo`, `eMail`, `created_at`, `updated_at`) VALUES
+	(1, 'cliente', NULL, 'Sylvie Reignier', '76 Résidence Elysée 2  78170 La Celle-Saint-Cloud  ', 1, 'sylv.reignier@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(2, 'cliente', NULL, 'Virginie Percevaux', '29 Av Gabriel Péri 92500 Rueil-Malmaison   Francia', 1, 'mdiouron@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(6, 'cliente', NULL, 'Nigel Moss', '12\nRue Saint-jean-Baptiste De La Salle 75006 Paris  Ile-de-France Francia', 1, 'nigel.moss@me.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(9, 'cliente', NULL, 'Céline Puvis de Chavannes', '45 Rue de la Rangée 92380 Garches  ', 1, 'Celinedaubert@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(11, 'cliente', NULL, 'Marine Reignier', '89 Rue de Bellevue Boulogne-Billancourt  92100 ', 1, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(10, 'cliente', NULL, 'Amélie Puvis', '34 rue de l\'ancienne mairie  92100 Boulogne-Billancour  ', 1, 'puvisdechavannesamelie@hotmail.com ', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(13, 'cliente', NULL, 'Ségolène Lequeux', '55\navenue Charles de Gaulle 92200 Neully sur seine  ', 1, 'segolene.lequeux@yahoo.fr', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(17, 'cliente', NULL, 'Lucile Dupin', '48 Rue de l\'Ourcq   75019 FR', 1, 'lucile.dupin@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(19, 'cliente', NULL, 'Gwénaële Brétignière Trogoff', '5 rue Julien poupinet, 78150 le chesnay     ', 1, 'gwenaelebretigniere@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(20, 'cliente', NULL, 'Sasha Mongin', '41 Rue du Faubourg du Temple, 75010 Paris    ', 1, 'contact@sashamongin.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(22, 'cliente', NULL, 'Antoine Auclaire', '57 Rue du Point du Jour Boulogne-Billancourt  92100 FR', 1, 'antoineauclair@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(23, 'cliente', NULL, 'Philippe Mongin', '6 Rue Taclet Paris 75020 ', 1, 'mongin75020@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(24, 'cliente', NULL, 'Thomas Allemand', '1 Rue Ordener Paris 75018 France', 1, 'thomas-allemand@hotmail.fr', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(50, 'cliente', NULL, 'Armand Auclair', '  ', 0, 'auclair3@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(51, 'cliente', NULL, 'Jean-Baptiste Fouquet Lapar', '1\nBoulevard Belleville, 75011 Paris   Francia', 0, 'jbfl@numero21.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(52, 'cliente', NULL, 'Je Formule', '128 Rue De Turenne  75003 Paris  ', 0, 'estelle@jeformule.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(53, 'cliente', NULL, 'Anne Schrader', '12\nRue Saint-jean-Baptiste De La Salle 75006 Paris  ', 0, 'anneschrader@gmx.net', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(54, 'cliente', NULL, 'Christelle Didelot', '42 bis rue cardinet 75017 Paris  ', 0, 'cfdidelot@free.fr', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(55, 'cliente', NULL, 'Coralie Dressel', '13 Rue De La Paroisse 78400 Chatou   ', 0, 'coralie@studio36.org', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(56, 'cliente', NULL, 'SOCOTEC', '143\nAvenue Charles de Gaulle 92200 Neuilly-sur-Seine  Francia', 0, 'lnita3108@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(57, 'cliente', NULL, 'Armelle De Geyer', '12 Rue St Jean Baptiste De La Salle Paris 75006  ', 0, 'armelledegeyer@Yahoo.fr', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(58, 'cliente', NULL, 'Andrée Jallon', '14 Rue Compagne Premier, 75014 Paris     ', 0, 'and.jallon@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(59, 'cliente', NULL, 'Sarah Lesne', '14 Rúe Bouret, 75019    ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(60, 'cliente', NULL, 'Berenice Gagnepan', '32, rue des Martyrs, 75009 Paris    ', 0, 'Berenice@make-it-agency.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(61, 'cliente', NULL, 'Caroline Ozog', '13 Rue des Longs Prés, 92100 Boulogne-Billancourt    ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(62, 'cliente', NULL, 'Consulado', '64 Bvd De La Tour Maubourg, 75007    ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(63, 'cliente', NULL, 'Clemence Andrieu\nClemence ANDRIEU', '14 Rúe Bouret, 75019  ', 0, 'cl.andrieux@gmail.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(64, 'cliente', NULL, 'Adèle Kewin', '90 rue des Moines, 75017 paris\n    ', 0, 'adelekewin@outlook.com', '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(65, 'cliente', NULL, 'Francisca Martínez Estupiñan', '284 Boulevard Saint-Germain Paris 75007', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(66, 'cliente', NULL, 'Sara', '  ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(67, 'cliente', NULL, 'Rashida', '  ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45'),
+	(68, 'cliente', NULL, 'Vivienne', '  ', 0, NULL, '2023-02-11 18:52:45', '2023-02-11 18:52:45');
+/*!40000 ALTER TABLE `clientes` ENABLE KEYS */;
+
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;

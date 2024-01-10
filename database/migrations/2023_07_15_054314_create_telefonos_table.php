@@ -15,14 +15,23 @@ return new class extends Migration {
 
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('entidad_id');
             $table
-                ->foreignId('entidad_id')
-                ->constrained('entidades')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-            $table->integer('tipo'); // 1=personal, 2=trabajo, 3=otro
-            $table->string('pais', 4);
-            $table->string('numero', 20);
+                ->foreign('entidad_id')
+                ->references('id')
+                ->on('entidades');
+            $table
+                ->integer('tipo')
+                ->nullable()
+                ->default('1'); // 1=personal, 2=trabajo, 3=otro
+            $table
+                ->string('cod_pais', 4)
+                ->nullable()
+                ->default('+33');
+            $table
+                ->string('numero', 20)
+                ->nullable()
+                ->default(null);
             $table->timestamps();
         });
 

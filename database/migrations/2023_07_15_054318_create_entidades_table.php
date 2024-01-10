@@ -15,33 +15,62 @@ return new class extends Migration {
     {
         Schema::disableForeignKeyConstraints();
 
-        Schema::create($this->table, function (Blueprint $table) {
+        Schema::create('entidades', function (Blueprint $table) {
             $table->id();
-            $table->string('razonSocial');
-            $table->string('nombres');
-            $table->string('apellidos');
+            $table
+                ->string('razonSocial')
+                ->nullable()
+                ->default(null)
+                ->charset('utf8mb4');
+            $table
+                ->string('titulo')
+                ->nullable()
+                ->default(null)
+                ->charset('utf8mb4');
+            $table
+                ->string('nombres')
+                ->nullable()
+                ->default(null)
+                ->charset('utf8mb4');
+            $table
+                ->string('apellidos')
+                ->nullable()
+                ->default(null)
+                ->charset('utf8mb4');
+            $table
+                ->date('aniversario')
+                ->nullable()
+                ->default(null);
             $table->boolean('is_active')->default(true);
+            $table
+                ->boolean('sexo')
+                ->nullable()
+                ->default(null);
             $table->enum('tipo', ['cliente', 'vendedor', 'perfil', 'JobTime']);
-            $table->unsignedBigInteger('email_id');
-            $table
-                ->foreign('email_id')
-                ->references('id')
-                ->on('emails')
-                ->onDelete('cascade');
-            $table->unsignedBigInteger('direccion_id');
-            $table
-                ->foreign('direccion_id')
-                ->references('id')
-                ->on('direcciones')
-                ->onDelete('cascade');
-            $table->unsignedBigInteger('telefono_id');
-            $table
-                ->foreign('telefono_id')
-                ->references('id')
-                ->on('telefonos')
-                ->onDelete('cascade');
             $table->timestamps();
         });
+
+        Schema::table('emails', function (Blueprint $table) {
+            $table
+                ->foreign('entidad_id')
+                ->references('id')
+                ->on('entidades');
+        });
+
+        Schema::table('direcciones', function (Blueprint $table) {
+            $table
+                ->foreign('entidad_id')
+                ->references('id')
+                ->on('entidades');
+        });
+
+        Schema::table('telefonos', function (Blueprint $table) {
+            $table
+                ->foreign('entidad_id')
+                ->references('id')
+                ->on('entidades');
+        });
+
         Schema::enableForeignKeyConstraints();
     }
 

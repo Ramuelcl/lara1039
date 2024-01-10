@@ -37,12 +37,11 @@ class EntidadSeeder extends Seeder
         $rows = DB::table('import')->get();
         foreach ($rows as $row) {
             // $entidad = new Entidad();
+            // dd($entidad);
             // Inserta el registro en la tabla 'entidades'
             $entidad_id = DB::table('entidades')->insertGetId([
                 // Ajusta según tus necesidades
-                // 'website' => $row->{'Website 1 - Value'} ?: null,
-                'tipo1' => '1',
-                'tipo2' => 'cliente',
+                'tipo' => 'cliente',
                 //
                 'razonSocial' => $row->{'Organization 1 - Name'} ?: null,
                 'titulo' => $row->{'Organization 1 - Title'} ?: null,
@@ -53,7 +52,19 @@ class EntidadSeeder extends Seeder
                 'sexo' => $row->Gender,
             ]);
             // dd($row, $entidad_id);
+            ///////////////////////////////////////////////
+            // procesa y agrega WEB SITE a la entidad
+            ///////////////////////////////////////////////
+            $webToCheck = $row->{"Website 1 - Value"};
 
+            if ($webToCheck) {
+                // Realiza una consulta para buscar la página web
+                $existingWeb = Email::where('nombre', $webToCheck)->first();
+
+                if (!$existingWeb) {
+                    $this->insertEmail($entidad_id, 'web', $webToCheck);
+                }
+            }
             ///////////////////////////////////////////////
             // procesa y agrega los EMAILS a la entidad
             ///////////////////////////////////////////////
@@ -64,8 +75,9 @@ class EntidadSeeder extends Seeder
 
                 if ($emailToCheck && filter_var($emailToCheck, FILTER_VALIDATE_EMAIL)) {
                     // Realiza una consulta para buscar el correo electrónico
-                    $existingEmail = Email::where('eMail', $emailToCheck)->first();
-
+                    // dump($emailToCheck);
+                    $existingEmail = Email::where('nombre', $emailToCheck)->first();
+                    // dd($existingEmail);
                     if ($existingEmail) {
                         // El correo electrónico ya existe en la base de datos
                         // Puedes manejar la lógica aquí, como mostrar un mensaje de error
@@ -223,7 +235,7 @@ class EntidadSeeder extends Seeder
         DB::table('emails')->insert([
             'entidad_id' => $entidad_id,
             'tipo' => $tipo,
-            'email' => $valor,
+            'nombre' => $valor,
         ]);
     }
 
