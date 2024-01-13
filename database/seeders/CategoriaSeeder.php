@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 
 class CategoriaSeeder extends Seeder
 {
-    public $categoria = 2000;
+    public $categoria = 3000;
     public $niveles = 2;
     public static $ind = 0;
     public static $saltoInd = 10;
@@ -19,7 +19,7 @@ class CategoriaSeeder extends Seeder
      */
     public function run()
     {
-        $this->categoria = config('app_settings.codigo_categorias', 2000);
+        $this->categoria = config('app_settings.codigo_categorias', 3000);
         $this->niveles = config('app_settings.niveles_categorias', 2);
         $this->createCategoriaItems(null);
     }

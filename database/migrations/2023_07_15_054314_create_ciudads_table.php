@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     protected $table = 'ciudades';
     /**
      * Run the migrations.
@@ -16,8 +15,18 @@ return new class extends Migration
 
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pais_id')->constrained('paises')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('nombre', 64)->nullable()->default(null)->charset('utf8mb4');
+            $table
+                ->unsignedBigInteger('pais_id')
+                ->default(0)
+                ->foreignId('pais_id')
+                ->constrained('paises')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table
+                ->string('nombre', 64)
+                ->nullable()
+                ->default(null)
+                ->charset('utf8mb4');
             $table->softDeletes();
         });
 

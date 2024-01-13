@@ -35,9 +35,9 @@ class Entidad extends Model
         return $this->belongsTo(Tabla::class);
     }
 
-    public function entidadDireccionesIdForeigns(): HasMany
+    public function emails()
     {
-        return $this->hasMany(Direccion::class);
+        return $this->belongsToMany(Email::class);
     }
 
     /**

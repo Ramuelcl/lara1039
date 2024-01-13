@@ -18,6 +18,7 @@ return new class extends Migration {
         Schema::create($this->table, function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('entidad_id');
+            // $table->dropForeign('emails_entidad_id_foreign');
             $table
                 ->foreign('entidad_id')
                 ->references('id')
@@ -29,11 +30,6 @@ return new class extends Migration {
                 ->nullable()
                 ->default(null);
             $table->timestamps();
-            $table->dropForeign('emails_entidad_id_foreign');
-            $table
-                ->foreign('entidad_id')
-                ->references('id')
-                ->on('entidades');
         });
 
         Schema::enableForeignKeyConstraints();

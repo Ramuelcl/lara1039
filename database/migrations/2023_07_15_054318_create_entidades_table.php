@@ -46,30 +46,30 @@ return new class extends Migration {
                 ->boolean('sexo')
                 ->nullable()
                 ->default(null);
-            $table->enum('tipo', ['cliente', 'vendedor', 'perfil', 'JobTime']);
+            $table->enum('tipo', ['cliente', 'vendedor', 'perfil', 'JobTime', 'chilenos']);
             $table->timestamps();
         });
 
-        Schema::table('emails', function (Blueprint $table) {
-            $table
-                ->foreign('entidad_id')
-                ->references('id')
-                ->on('entidades');
-        });
+        // Schema::table('emails', function (Blueprint $table) {
+        //     $table
+        //         ->foreign('entidad_id')
+        //         ->references('id')
+        //         ->on('entidades');
+        // });
 
-        Schema::table('direcciones', function (Blueprint $table) {
-            $table
-                ->foreign('entidad_id')
-                ->references('id')
-                ->on('entidades');
-        });
+        // Schema::table('direcciones', function (Blueprint $table) {
+        //     $table
+        //         ->foreign('entidad_id')
+        //         ->references('id')
+        //         ->on('entidades');
+        // });
 
-        Schema::table('telefonos', function (Blueprint $table) {
-            $table
-                ->foreign('entidad_id')
-                ->references('id')
-                ->on('entidades');
-        });
+        // Schema::table('telefonos', function (Blueprint $table) {
+        //     $table
+        //         ->foreign('entidad_id')
+        //         ->references('id')
+        //         ->on('entidades');
+        // });
 
         Schema::enableForeignKeyConstraints();
     }

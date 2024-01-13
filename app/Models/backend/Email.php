@@ -35,9 +35,9 @@ class Email extends Model
         'id' => 'integer',
     ];
 
-    public function emailEntidad(): BelongsTo
+    public function entidades()
     {
-        return $this->belongsTo(Entidad::class);
+        return $this->belongsToMany(Entidad::class);
     }
 
     /**

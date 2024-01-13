@@ -34,9 +34,9 @@ class Direccion extends Model
         return $this->belongsTo(Entidad::class);
     }
 
-    public function entidad(): BelongsTo
+    public function entidades()
     {
-        return $this->belongsTo(Entidad::class);
+        return $this->belongsToMany(Entidad::class);
     }
 
     public function ciudad(): BelongsTo

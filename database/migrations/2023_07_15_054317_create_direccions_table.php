@@ -20,19 +20,20 @@ return new class extends Migration {
                 ->foreign('entidad_id')
                 ->references('id')
                 ->on('entidades');
-            $table->integer('tipo'); // 1=personal, 2=trabajo, 3=otro
-            // $table->foreignId('entidad_id')->constrained('entidades')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->enum('tipo', ['personal', 'trabajo', 'otro']); // 1=personal, 2=trabajo, 3=otro
             $table
+                ->unsignedBigInteger('ciudad_id')
+                ->nullable()
+                ->default(0)
                 ->foreignId('ciudad_id')
                 ->constrained('ciudades')
                 ->cascadeOnDelete()
-                ->cascadeOnUpdate()
-                ->default(0);
+                ->cascadeOnUpdate();
             $table->string('direccion', 128)->charset('utf8mb4');
             $table
                 ->string('codigo_postal', 6)
                 ->nullable()
-                ->default('0')
+                ->default(null)
                 ->charset('utf8mb4');
             $table
                 ->string('region', 64)
@@ -42,7 +43,6 @@ return new class extends Migration {
             $table->timestamps();
             $table->softDeletes();
         });
-
         Schema::enableForeignKeyConstraints();
     }
 

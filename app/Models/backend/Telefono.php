@@ -28,14 +28,9 @@ class Telefono extends Model
         'entidad_id' => 'integer',
     ];
 
-    public function mmEntidads(): MorphToMany
+    public function entidades()
     {
-        return $this->morphedByMany(Entidad::class, 'telefonoable');
-    }
-
-    public function entidad(): BelongsTo
-    {
-        return $this->belongsTo(Entidad::class);
+        return $this->belongsToMany(Entidad::class);
     }
 
     /**

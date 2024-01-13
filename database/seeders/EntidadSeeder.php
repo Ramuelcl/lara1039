@@ -28,30 +28,30 @@ class EntidadSeeder extends Seeder
         DB::unprepared($sql);
         // SELECT  `id`,  `Name`,  `Given Name`,  `Additional Name`,  `Family Name`,  `Birthday`,  `Gender`,  `Location`,  `E-mail 1 - Type`,  `E-mail 1 - Value`,  `E-mail 2 - Type`,  `E-mail 2 - Value`,  `E-mail 3 - Type`,  `E-mail 3 - Value`,  `Phone 1 - Type`,  `Phone 1 - Value`,  `Phone 2 - Type`,  `Phone 2 - Value`,  `Address 1 - Type`,  `Address 1 - Formatted`,  `Address 1 - Street`,  `Address 1 - City`,  `Address 1 - PO Box`,  `Address 1 - Region`,  `Address 1 - Postal Code`,  `Address 1 - Country`,  `Address 1 - Extended Address`,  `Address 2 - Type`,  `Address 2 - Formatted`,  `Address 2 - Street`,  `Address 2 - City`,  `Address 2 - PO Box`,  `Address 2 - Region`,  `Address 2 - Postal Code`,  `Address 2 - Country`,  `Address 2 - Extended Address`,  `Organization 1 - Name`,  `Organization 1 - Title`,  `Website 1 - Type`,  `Website 1 - Value`
 
-        // Borra todos los registros existentes en la tabla 'entidades'
-
-        // Antes de insertar nuevos registros, elimina los registros existentes en telefonos
-        // DB::table('telefonos')->truncate();
-        // DB::table('entidades')->truncate();
-
+        if (DB::getPdo()->errorCode() !== '00000') {
+            // La consulta SQL falló
+            // Agregue aquí el código para manejar el error
+        } else {
+            // La consulta SQL se completó correctamente
+            // Agregue aquí el código para continuar con el script
+        }
         $rows = DB::table('import')->get();
+        $count = 0;
         foreach ($rows as $row) {
-            // $entidad = new Entidad();
-            // dd($entidad);
-            // Inserta el registro en la tabla 'entidades'
-            $entidad_id = DB::table('entidades')->insertGetId([
-                // Ajusta según tus necesidades
-                'tipo' => 'cliente',
-                //
-                'razonSocial' => $row->{'Organization 1 - Name'} ?: null,
-                'titulo' => $row->{'Organization 1 - Title'} ?: null,
-                'nombres' => $row->{'Given Name'} . ' ' . $row->{'Additional Name'},
-                'apellidos' => $row->{'Family Name'},
-                'is_active' => true, // Ajusta según tus necesidades
-                'aniversario' => $this->parseDate($row->Birthday),
-                'sexo' => $row->Gender,
-            ]);
-            // dd($row, $entidad_id);
+            $count++;
+            dump($count . ' de ' . $rows->count());
+            $entidad_id = $this->fncCrearEntidad(
+                'chilenos',
+                $row->{'Organization 1 - Name'} ?: null,
+                $row->{'Organization 1 - Title'} ?: null,
+                $row->{'Given Name'} . ' ' . $row->{'Additional Name'},
+                $row->{'Family Name'},
+                true, // Ajusta según tus necesidades
+                $this->parseDate($row->Birthday),
+                $row->Gender,
+            );
+
+            // dump($row, $entidad_id);
             ///////////////////////////////////////////////
             // procesa y agrega WEB SITE a la entidad
             ///////////////////////////////////////////////
@@ -62,7 +62,7 @@ class EntidadSeeder extends Seeder
                 $existingWeb = Email::where('nombre', $webToCheck)->first();
 
                 if (!$existingWeb) {
-                    $this->insertEmail($entidad_id, 'web', $webToCheck);
+                    $this->fncCrearEmailWeb($entidad_id, 'web', 'personal', $webToCheck);
                 }
             }
             ///////////////////////////////////////////////
@@ -78,17 +78,8 @@ class EntidadSeeder extends Seeder
                     // dump($emailToCheck);
                     $existingEmail = Email::where('nombre', $emailToCheck)->first();
                     // dd($existingEmail);
-                    if ($existingEmail) {
-                        // El correo electrónico ya existe en la base de datos
-                        // Puedes manejar la lógica aquí, como mostrar un mensaje de error
-                    } else {
-                        // El correo electrónico no existe en la base de datos, puedes insertarlo
-                        // Email::create([
-                        //     'entidad_id' => $entidad_id,
-                        //     'tipo' => $emailTypeKey, // Ajusta esto según tus necesidades
-                        //     'eMail' => $emailToCheck,
-                        // ]);
-                        $this->insertEmail($entidad_id, $emailTypeKey, $emailToCheck);
+                    if (!$existingEmail) {
+                        $this->fncCrearEmailWeb($entidad_id, 'mail', $emailTypeKey, $emailToCheck);
                     }
                 }
             }
@@ -111,7 +102,7 @@ class EntidadSeeder extends Seeder
                     //     'tipo' => $phoneType,
                     //     'numero' => $phoneValue,
                     // ]);
-                    $this->insertTelefono($entidad_id, $phoneType, $phoneValue);
+                    $this->fncCrearTelefono($entidad_id, $phoneType, $phoneValue);
                 }
             }
 
@@ -120,63 +111,123 @@ class EntidadSeeder extends Seeder
             ///////////////////////////////////////////////
             for ($i = 1; $i <= 2; $i++) {
                 // Cambia esto según la cantidad de direcciones que esperas
-                // Determina el tipo de dirección basado en $phoneType
+                // Determina el tipo de dirección basado en Address 1 - Type
                 $addressType = $this->determinarTipoKey($i);
                 // $formattedAddress = $row->{"Address {$i} - Formatted"};
                 $street = $row->{"Address {$i} - Street"};
                 if (!$street) {
                     continue;
                 }
-
-                $city = $row->{"Address {$i} - City"};
                 $postalCode = $row->{"Address {$i} - Postal Code"};
+                $city = $row->{"Address {$i} - City"};
+                $ciudad_id = 0;
                 $country = $row->{"Address {$i} - Country"};
-                $direccionId = $this->insertDireccion($entidad_id, $addressType, $street, $postalCode);
+                $pais_id = 0;
 
-                // Inserta la ciudad si existe
-                if (!empty($city)) {
-                    // Realiza una consulta para buscar la ciudad
-                    $ciudadId = Ciudad::where('nombre', $city)->first();
-
-                    if ($ciudadId) {
-                        $ciudadId = $ciudadId->id;
-                        // La ciudad ya existe en la base de datos
-                        // Puedes manejar la lógica aquí, como mostrar un mensaje de error
-                    } else {
-                        $ciudadId = $this->insertCiudad($city);
-                    }
-                    // Asocia la ciudad a la dirección
-                    DB::table('direcciones')
-                        ->where('id', $direccionId)
-                        ->update(['ciudad_id' => $ciudadId]);
-
-                    // Inserta el país si existe
-                    if ($country == '') {
-                        $country = 'France';
-                    }
-                    if (!empty($country)) {
-                        // Realiza una consulta para buscar la ciudad
-                        $paisId = Pais::where('nombre', $country)->first();
-
-                        if ($paisId) {
-                            $paisId = $paisId->id;
-                            // La ciudad ya existe en la base de datos
-                            // Puedes manejar la lógica aquí, como mostrar un mensaje de error
-                        } else {
-                            $paisId = $this->insertPais($country);
-                        }
-                        // Asocia el país a la ciudad
-                        DB::table('ciudades')
-                            ->where('id', $ciudadId)
-                            ->update(['pais_id' => $paisId]);
-                    }
+                if ($city == '') {
+                    $city = 'Paris';
+                }
+                if ($country == '') {
+                    $country = 'France';
+                }
+                // Realiza una consulta para buscar el país
+                $pais = Pais::where('nombre', $country)->first();
+                if (!$pais) {
+                    // Inserta el pais si no existe
+                    $pais_id = $this->fncCrearPais($country);
+                } else {
+                    $pais_id = $pais->id;
                 }
 
-                // dd($pais);
+                // Realiza una consulta para buscar la ciudad
+                $ciudad = Ciudad::where('nombre', $city)->first();
+                if (!$ciudad) {
+                    // Inserta la ciudad si no existe
+                    $ciudad_id = $this->fncCrearCiudad($city, $pais_id);
+                } else {
+                    $ciudad_id = $ciudad->id;
+                }
 
-                // dump($paisId, $i, $addressType, $street);
+                $this->fncCrearDireccion($entidad_id, $addressType, $street, $postalCode, $ciudad_id);
             }
         }
+    }
+
+    private function fncCrearEntidad($tipo, $razonSocial, $titulo, $nombres, $apellidos, $is_active, $aniversario, $sexo)
+    {
+        // Crea una nueva entidad
+        $entidad = new Entidad();
+        $entidad->razonSocial = $razonSocial;
+        $entidad->titulo = $titulo;
+        $entidad->nombres = $nombres;
+        $entidad->apellidos = $apellidos;
+        $entidad->aniversario = $aniversario;
+        $entidad->is_active = $is_active;
+        $entidad->sexo = $sexo;
+        $entidad->tipo = $tipo;
+        $entidad->save();
+        return $entidad->id;
+    }
+    private function fncCrearTelefono($entidad_id, $tipo, $numero)
+    {
+        $telefono = new Telefono();
+        $telefono->entidad_id = $entidad_id;
+        $telefono->tipo = $tipo;
+        $telefono->numero = $numero;
+        $telefono->save();
+
+        DB::table('entidad_telefonos')->insert([
+            'entidad_id' => $entidad_id,
+            'telefono_id' => $telefono->id,
+        ]);
+    }
+
+    private function fncCrearEmailWeb($entidad_id, $tipo1 = 'mail', $tipo2 = 'personal', $valor)
+    {
+        $email = new Email();
+        $email->entidad_id = $entidad_id;
+        $email->tipo1 = $tipo1;
+        $email->tipo2 = $tipo2;
+        $email->nombre = strtolower($valor);
+        $email->save();
+
+        DB::table('entidad_emails')->insert([
+            'entidad_id' => $entidad_id,
+            'email_id' => $email->id,
+        ]);
+    }
+
+    private function fncCrearDireccion($entidad_id, $tipo, $street, $postalCode, $ciudad_id)
+    {
+        $direccion = new Direccion();
+        $direccion->entidad_id = $entidad_id;
+        $direccion->tipo = $tipo;
+        $direccion->ciudad_id = $ciudad_id;
+        $direccion->direccion = $street;
+        $direccion->codigo_postal = $postalCode;
+        $direccion->save();
+
+        DB::table('entidad_direcciones')->insert([
+            'entidad_id' => $entidad_id,
+            'direccion_id' => $direccion->id,
+        ]);
+    }
+
+    private function fncCrearCiudad($nombre, $pais_id)
+    {
+        $ciudad = new Ciudad();
+        $ciudad->nombre = $nombre;
+        $ciudad->pais_id = $pais_id;
+        $ciudad->save();
+        return $ciudad->id;
+    }
+
+    private function fncCrearPais($nombre)
+    {
+        $pais = new Pais();
+        $pais->nombre = $nombre;
+        $pais->save();
+        return $pais->id;
     }
 
     private function determinarTipoIndex($tabla, $key)
@@ -193,14 +244,14 @@ class EntidadSeeder extends Seeder
     private function determinarTipoKey($key)
     {
         if ($key == 1) {
-            return 10;
+            return 'personal';
         } elseif ($key == 2) {
-            return 20;
+            return 'trabajo';
         } elseif ($key == 3) {
-            return 30;
+            return 'otro';
         } else {
             // En caso de que no coincida con ninguno de ellos.
-            return 90;
+            return 'otro';
         }
     }
 
@@ -211,58 +262,16 @@ class EntidadSeeder extends Seeder
 
         // Verifica si contiene 'home' o 'work' y asigna el tipo adecuado
         if (strpos($key, 'home') !== false) {
-            return 10;
+            return 'personal';
         } elseif (strpos($key, 'work') !== false) {
-            return 20;
+            return 'trabajo';
         } elseif (strpos($key, 'mobile') !== false) {
-            return 30;
+            return 'otro';
         } else {
             // En caso de que no coincida con ninguno de los dos, podrías devolver un valor por defecto o manejarlo de otra manera.
-            return 90;
+            return 'otro';
         }
     }
-    private function insertTelefono($entidad_id, $tipo, $numero)
-    {
-        DB::table('telefonos')->insert([
-            'entidad_id' => $entidad_id,
-            'tipo' => $tipo,
-            'numero' => $numero,
-        ]);
-    }
-
-    private function insertEmail($entidad_id, $tipo, $valor)
-    {
-        DB::table('emails')->insert([
-            'entidad_id' => $entidad_id,
-            'tipo' => $tipo,
-            'nombre' => $valor,
-        ]);
-    }
-
-    private function insertDireccion($entidad_id, $tipo, $street, $postalCode)
-    {
-        return DB::table('direcciones')->insertGetId([
-            'entidad_id' => $entidad_id,
-            'tipo' => $tipo,
-            'direccion' => $street,
-            'codigo_postal' => $postalCode,
-        ]);
-    }
-
-    private function insertCiudad($nombre)
-    {
-        return DB::table('ciudades')->insertGetId([
-            'nombre' => $nombre,
-        ]);
-    }
-
-    private function insertPais($nombre)
-    {
-        return DB::table('paises')->insertGetId([
-            'nombre' => $nombre,
-        ]);
-    }
-
     private function parseDate($date)
     {
         return $date ? Carbon::createFromFormat('Y-m-d', $date)->toDateString() : null;

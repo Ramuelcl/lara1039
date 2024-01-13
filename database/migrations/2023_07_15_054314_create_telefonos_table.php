@@ -21,9 +21,9 @@ return new class extends Migration {
                 ->references('id')
                 ->on('entidades');
             $table
-                ->integer('tipo')
+                ->enum('tipo', ['personal', 'trabajo', 'otro'])
                 ->nullable()
-                ->default('1'); // 1=personal, 2=trabajo, 3=otro
+                ->default('personal'); // 1=personal, 2=trabajo, 3=otro
             $table
                 ->string('cod_pais', 4)
                 ->nullable()
