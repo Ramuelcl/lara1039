@@ -13,16 +13,25 @@ use App\Models\backend\Telefono;
 use App\Models\banca\Client;
 use App\Models\banca\Traspaso;
 use App\Models\banca\Movimiento;
+//
 use Carbon\Carbon;
 use DateTime, Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class BancaController extends Controller
 {
     public $mensajes = [];
+    public $titulo;
 
+    public function showEntidades()
+    {
+        dd('showEntidades');
+        $this->titulo = 'Clientes';
+        $entidades = Entidad::count();
+
+        return view('livewire.lwentidades', ['titulo' => $this->titulo, 'entidades' => this->entidades]);
+    }
     public function showImportForm()
     {
         $titulos = ['id', 'Date', 'Libelle', 'EURES', 'FRANCS', 'archivo traspaso', '# movimiento'];
@@ -210,17 +219,6 @@ class BancaController extends Controller
             ->back()
             ->with('success', 'tabla clientes traspasada');
     }
-    public function checkFileImported($nombreArchivo)
-    {
-        try {
-            $count = Traspaso::where('NomArchTras', $nombreArchivo)->count();
-        } catch (\Throwable $th) {
-            $count = 0;
-        }
-
-        return $count > 0;
-    }
-
     public function eliminarRegistrosDuplicados()
     {
         // dd('eliminarRegistrosDuplicados');
@@ -384,7 +382,7 @@ class BancaController extends Controller
             } catch (Exception $e) {
                 // Error al parsear la fecha
                 return null;
-            };
+            }
         }
     }
 
@@ -444,12 +442,8 @@ class BancaController extends Controller
     {
         return 'banca';
     }
-    public function showImportForm()
-    {
-        return view('banca.import');
-    }
 
-    public function import(Request $request)
+    public function importarDatos(Request $request)
     {
         $separadorCampos = $request->input('separador_campos');
         $caracterString = $request->input('caracter_string');

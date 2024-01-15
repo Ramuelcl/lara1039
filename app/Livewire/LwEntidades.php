@@ -3,11 +3,13 @@
 namespace App\Livewire;
 
 use Livewire\Component;
-
-class LwEntidades extends Component
+use App\Models\backend\Entidad;
+class Lwentidades extends Component
 {
+    public $entidades = 0;
     public function render()
     {
-        return view('livewire.lw-entidades');
+        $this->entidades = Entidad::all();
+        return view('livewire.lwentidades', compact(['entidades' => $this->entidades, 'paso' => 'rfrrr']));
     }
 }

@@ -10,6 +10,13 @@ use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+    // version livewire
+    public function listar()
+    {
+        return view('admin.users.listar');
+    }
+
+    // fin version livewire
     public function index()
     {
         $users = User::all();
