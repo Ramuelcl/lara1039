@@ -13,6 +13,6 @@
     {{-- <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.3/dist/cdn.min.js"></script> --}}
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/dark-mode.js'])
+    @vite(['resources/css/app.css', 'resources/css/tablas.css', 'resources/js/app.js', 'resources/js/dark-mode.js'])
 
 </head>
