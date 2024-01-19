@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- resources/views/layouts/admin.blade.php -->
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="">
 
 @include('includes.head') <!-- Incluir el head -->
 

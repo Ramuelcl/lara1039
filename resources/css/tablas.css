@@ -15,5 +15,5 @@
 }
 
 .table tbody tr::nth-child(2n+1) {
-    @apply bg-gray-200 dark:bg-gray-800;
+    @apply bg-gray-300 dark:bg-gray-700;
 }
