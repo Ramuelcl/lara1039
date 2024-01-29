@@ -4,6 +4,8 @@ namespace App\Livewire\Users;
 
 use Livewire\{WithPagination, Component};
 use App\Models\User;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class LwMuestraUsuarios extends Component
 {
@@ -13,24 +15,28 @@ class LwMuestraUsuarios extends Component
         $collectionViews = ['5', '15', '25', '50'];
 
     // elemento de busqueda
-    public $bSearch;
-    public $search;
+    public $bSearch = true;
+    public $search = '';
 
     // elemento activo
-    public $bActive;
-    public $activeAll;
+    public $bActive = true;
+    public $activeAll = false;
 
     // elemento roles
-    public $bRoles = true;
-    public $roles;
+    public $bRoles = false,
+        $roles, // tabla
+        $roles_a, // arreglo
+        $rol; // para el filtro
+
+    public $permisos;
 
     // orden y filtro
     public $sortField = 'id',
         $sortDir = 'asc',
         $icon = '';
     // campos por los cuales ordenar
-    public $fieldsOrden = ['id', 'name', 'email'];
-    public $nameOrden = ['id', 'Nombre', 'e-Mail'];
+    public $fieldsOrden = ['id', 'name', 'email', 'role'];
+    public $nameOrden = ['id', 'Nombre', 'e-Mail', 'Role'];
 
     // campos de la tabla
     public $user_id;
@@ -103,6 +109,7 @@ class LwMuestraUsuarios extends Component
         $users = $this->updatedQuery();
         return view('livewire.users.lw-muestra-usuarios', [
             'users' => $users,
+            // 'roles' => $this->roles,
         ]);
     }
     public function fncOrden($sortField = 'id')
@@ -123,6 +130,7 @@ class LwMuestraUsuarios extends Component
     public function updatedQuery()
     {
         $collection = User::where('id', '>', 0)
+            // ->join('roles', 'role.id', 'user.id')
 
             ->when($this->search, function ($query) {
                 $srch = "%$this->search%";
@@ -131,7 +139,8 @@ class LwMuestraUsuarios extends Component
                     ->orWhere('name', 'like', $srch)
                     ->orWhere('email', 'like', $srch);
                 // filtrando por un campo de otra tabla
-                // ->whereColumn('direccion.ciudad', 'like', $srch)
+                // ->orWhere(User::with('roles')->get('name'), 'like', $srch);
+                // ->whereColumn('role.name', 'like', $srch); // NO FUNCIONA
             })
 
             ->when($this->sortField || $this->sortDir, function ($query) {
@@ -145,22 +154,23 @@ class LwMuestraUsuarios extends Component
                 } else {
                     return $query->orderBy($this->sortField, $this->sortDir);
                 }
+            })
+
+            ->when($this->rol, function ($query) {
+                // $srch = "%$this->search%";
+                // dd($this->rol);
+                return $query->Role($this->rol);
+            })
+
+            ->when($this->activeAll, function ($query) {
+                return $query->active($query);
             });
-
-        // ->when($this->roles, function ($query) {
-        //     // $srch = "%$this->search%";
-        //     // dd($this->roles);
-        //     return $query->role($this->roles);
-        // })
-
-        // ->when($this->activeAll, function ($query) {
-        //     return $query->active($query);
-        // })
-
         $collection = $collection->paginate($this->collectionView);
+        $this->roles = Role::all();
+        $this->roles_a = $this->roles->pluck('name')->toArray();
+        $this->permisos = Permission::all();
+        // $this->fncTotalRegs();
         return $collection;
-        $this->fncTotalRegs();
-        // $this->permisos = Permission::all();
     }
 
     public function fncSearch($search)
@@ -171,5 +181,16 @@ class LwMuestraUsuarios extends Component
     public function updatingSearch()
     {
         $this->resetPage();
+    }
+    public function fncClear()
+    {
+        $this->collectionView = 5;
+        $this->activeAll = false;
+
+        $this->resetErrorBag();
+        $this->resetPage();
+        $this->reset(['search', 'activeAll', 'sortField', 'sortDir']);
+        $this->reset();
+        // $this->emit('fncSearchClear');
     }
 }

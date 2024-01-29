@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 // Spatie
 use Spatie\Permission\Traits\HasRoles;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
@@ -70,8 +71,23 @@ class User extends Authenticatable
     {
         return $this->where('is_active', true);
     }
-
-    public function r_roles()
+    // filtra por campo Role
+    public function scopeRole($query, $rol)
+    {
+        // dd(['rol' => $rol, 'query' => $query]);
+        if (!empty($rol)) {
+            $paso = $query->whereHas('roles', function ($query) use ($rol) {
+                $query->where('name', $rol);
+            });
+            dd(['rol' => $rol, 'paso' => $paso]);
+            return $paso;
+        }
+    }
+    public function scopeRoles()
+    {
+        return $this->with('roles');
+    }
+    public function r_Roles()
     {
         return $this->belongsTo(Role::class);
     }

@@ -4,12 +4,52 @@
             <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                 <div class="bg-gray-100 px-4 py-3 items-center justify-between border-t border-ray-200 sm:px-6">
                     <div class="flex text-gray-500">
+                        @if ($users)
+                            {{-- {{ $search }} --}}
+                            @if ($bSearch)
+                                <label for="search" class="sr-only">Search</label>
+                                <div class="relative mt-1 mx-1">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                        <svg class="w-5 h-5 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                            fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd"
+                                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                clip-rule="evenodd"></path>
+                                        </svg>
+                                    </div>
+                                    <input wire:model.live="search" type="search" id="search"
+                                        class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                        placeholder="{{ __('Search for items') }}">
+                                </div>
+                            @endif
 
-                        <div>
-                            <input name="search" type="search" wire:model.live="search" placeholder="{{ __('search') }}"
-                                class="w-1/2 text-gray-500 bg-gray-100 dark:text-gray-100 dark:bg-gray-800 mx-4 border-2 rounded-lg">
-                        </div>
+                            {{-- {{ $roles }} --}}
+                            @if ($bRoles)
+                                <x-forms.tw_select idName="rol">
+                                    @foreach ($roles_a as $role)
+                                        <option>{{ $role }}</option>
+                                    @endforeach
+                                </x-forms.tw_select>
+                            @endif
+
+                            {{-- {{ $activo }} --}}
+                            @if ($bActive)
+                                <div class="mx-2 my-2">
+                                    {{-- <x-forms.tw_checkbox label="Actives ?" idName="activeAll" /> --}}
+                                    <label for="activeAll">Actives?</label>
+                                    <input type="checkbox" wire:model.live="activeAll" class="ml-2">
+                                </div>
+                                {{-- <x-forms.tw_checkbox label="Actives" :idName="$activeAll" class="mr-2" /> --}}
+                            @endif
+
+                            @if ($bSearch || $bActive)
+                                <button wire:click="fncClear()"
+                                    class="mt-2 border-2 text-xs rounded-md h-9">{{ __($display['clear']) }}
+                                </button>
+                            @endif
+                        @endif
                     </div>
+
                     <table class="min-w-full divide-y divide-gray-200">
                         @foreach ($fields as $field)
                             @if ($field['table']['display'])
@@ -20,9 +60,9 @@
                                 @if ($field['name'] == 'is_active')
                                     <th scope="col"
                                         class="bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
-                                        @if (!$activeAll)
-                                            {{ __($field['table']['titre']) }}
-                                        @endif
+                                        {{-- @if (!$activeAll) --}}
+                                        {{ __($field['table']['titre']) }}
+                                        {{-- @endif --}}
                                     </th>
                                 @else
                                     <th wire:click="fncOrden('{{ $orden }}')" scope="col"
@@ -40,13 +80,9 @@
                                 {{-- @hasanyrole('admin') --}}
                             </div>
                             <div class="justify-end">
-                                <button wire:click="fncNewEdit(0)" class="button-primary text-xs inline-flex"><svg
-                                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M12 4.5v15m7.5-7.5h-15" />
-                                    </svg>
-                                    {{ __($display['new']) }}
+                                <button wire:click="fncNewEdit(0)"
+                                    class="button-primary text-xs inline-block"><x-forms.tw_icons name="plus"
+                                        class="w-5 h-5" />{{ __($display['new']) }}
                                 </button>
                                 {{-- @endhasanyrole --}}
                             </div>
@@ -70,13 +106,6 @@
                                                     @break
 
                                                     @case('profile_photo_path')
-                                                        {{-- @if (substr($reg->profile_photo_path, 0, 8) == 'https://')
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="{{ $reg->profile_photo_path }}" alt="avatar">
-                                                        @else
-                                                            <img class="h-10 w-10 rounded-full"
-                                                                src="{{ asset($reg->profile_photo_path) }}" alt="avatar">
-                                                        @endif --}}
                                                         @if (Storage::exists($reg->profile_photo_path))
                                                             <img src="{{ Storage::url($reg->profile_photo_path) }}"
                                                                 class="w-5 rounded-full" alt="avatar">
@@ -99,9 +128,9 @@
                                                     @break
 
                                                     @case('is_active')
-                                                        @if (!$activeAll)
-                                                            <x-forms.tw_estado valor="{{ $reg->is_active }}" tipo="si-no" />
-                                                        @endif
+                                                        {{-- @if (!$activeAll) --}}
+                                                        <x-forms.tw_estado valor="{{ $reg->is_active }}" tipo="si-no" />
+                                                        {{-- @endif --}}
                                                     @break
 
                                                     @default
@@ -114,35 +143,29 @@
                                         <div>
                                             {{-- @hasanyrole('admin') --}}
                                             <button wire:click="fncRoles({{ $reg->id }})"
-                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="w-5 h-5 inline-flex">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                                </svg>
+                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><x-forms.tw_icons
+                                                    name="user-group" class="w-5 h-5 inline-block" />
                                                 {{ __($display['roles']) }}
                                             </button>
                                             {{-- @endhasanyrole --}}
                                         </div>
                                         <div>
+                                            <!-- Ejemplo de un botón con un icono SVG -->
+                                            <x-forms.tw_boton icon="pencil">Edit</x-forms.tw_boton>
+
+
                                             {{-- @hasanyrole('admin') --}}
                                             <button wire:click="fncNewEdit({{ $reg->id }})"
-                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="w-5 h-5 inline-flex">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
-                                                </svg>
+                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><x-forms.tw_icons
+                                                    name="pencil" class="w-5 h-5 inline-block" />
 
                                                 {{ __($display['edit']) }}
                                             </button>
                                             {{-- @endhasanyrole --}}
                                         </div>
                                         <div>
-                                            {{-- @hasanyrole('admin') --}} <button
-                                                wire:click="fncDeleteConfirm({{ $reg->id }})"
+                                            {{-- @hasanyrole('admin') --}}
+                                            <button wire:click="fncDeleteConfirm({{ $reg->id }})"
                                                 wire:loading.attr="disabled"
                                                 class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><svg
                                                     xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -171,7 +194,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div> {{ $users->links() }}</div>
+                        <div class=""> {{ $users->links() }}</div>
                     </div>
                 </div>
             </div>
