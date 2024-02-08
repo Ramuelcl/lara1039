@@ -67,27 +67,72 @@ class User extends Authenticatable
     {
         return $query->where('is_active', true);
     }
-    public function Activo()
-    {
-        return $this->where('is_active', true);
-    }
+    // public function Activo()
+    // {
+    //     return $this->where('is_active', true);
+    // }
     // filtra por campo Role
-    public function scopeRole($query, $rol)
+    // public function scopeRole($query, $role)
+    // {
+    //     // dd(['role' => $role, 'query' => $query]);
+    //     if (!empty($role)) {
+    //         $paso = $query->whereHas('roles', function ($query) use ($role) {
+    //             $query->where('name', $role);
+    //         });
+    //         dd(['role' => $role, 'paso' => $paso]);
+    //         return $paso;
+    //     }
+    // }
+    public function scopeRoles($query, $roles)
     {
-        // dd(['rol' => $rol, 'query' => $query]);
-        if (!empty($rol)) {
-            $paso = $query->whereHas('roles', function ($query) use ($rol) {
-                $query->where('name', $rol);
+        // Verifica si se proporcionaron roles
+        if (!empty($roles) && is_array($roles)) {
+            // Utiliza whereHas con orWhere para filtrar por múltiples roles
+            return $query->where(function ($query) use ($roles) {
+                foreach ($roles as $role) {
+                    $query->orWhereHas('roles', function ($query) use ($role) {
+                        $query->where('name', $role);
+                    });
+                }
             });
-            dd(['rol' => $rol, 'paso' => $paso]);
-            return $paso;
+        }
+
+        // Si no se proporcionaron roles, simplemente devuelve el query builder original
+        return $query;
+    }
+
+    // otra opcion para los roles
+    // public function scopeRoles($query, $roles)
+    // {
+    //     // Verifica si se proporcionaron roles
+    //     if (!empty($roles) && is_array($roles)) {
+    //         // Utiliza whereHas con or para filtrar por múltiples roles
+    //         return $query->whereHas('roles', function ($query) use ($roles) {
+    //             $query->whereIn('name', $roles);
+    //         });
+    //     }
+
+    //     // Si no se proporcionaron roles, simplemente devuelve el query builder original
+    //     return $query;
+    // }
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            $srch = "%$search%";
+            return $query
+                ->where('id', 'like', $srch)
+                ->orWhere('name', 'like', $srch)
+                ->orWhere('email', 'like', $srch);
+            // para una tabla externa, por ejemplo apellidos
+            // para una tabla externa, no funciona para roles
+            // ->orWhere('r_roles', function ($query) use ($srch) {
+            //     return $query->where('name', 'like', $srch);
+            // })
         }
     }
-    public function scopeRoles()
-    {
-        return $this->with('roles');
-    }
-    public function r_Roles()
+
+    public function r_roles()
     {
         return $this->belongsTo(Role::class);
     }

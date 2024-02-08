@@ -7,7 +7,7 @@
 
     <select wire:model.live="{{ $idName }}" {{ $attributes->merge(['class' => 'text-xs mx-2 my-2 rounded-md']) }}
         {{ $disabled ? 'disabled' : '' }}>
-        <option value="" disabled>{{ __('Select...') }}</option>
+        <option value=" " disabled>{{ __('Select...') }}</option>
         {{ $slot }}
     </select>
 </div>

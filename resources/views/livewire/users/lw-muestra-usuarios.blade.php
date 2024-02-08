@@ -24,8 +24,9 @@
                             @endif
 
                             {{-- {{ $roles }} --}}
-                            @if ($bRoles)
-                                <x-forms.tw_select idName="rol">
+                            @if ($bRoles || true)
+                                <x-forms.tw_select idName="user_rol">
+                                    <option value="">Todos</option>
                                     @foreach ($roles_a as $role)
                                         <option>{{ $role }}</option>
                                     @endforeach
@@ -80,10 +81,12 @@
                                 {{-- @hasanyrole('admin') --}}
                             </div>
                             <div class="justify-end">
-                                <button wire:click="fncNewEdit(0)"
+                                <x-forms.tw_boton wire:click="fncNewEdit(0)" icon="plus"
+                                    bgColor="blue">{{ __($display['new']) }}</x-forms.tw_boton>
+                                {{-- <button wire:click="fncNewEdit(0)"
                                     class="button-primary text-xs inline-block"><x-forms.tw_icons name="plus"
                                         class="w-5 h-5" />{{ __($display['new']) }}
-                                </button>
+                                </button> --}}
                                 {{-- @endhasanyrole --}}
                             </div>
                         </th>
@@ -142,41 +145,23 @@
                                     <td class="flex px-6 py-4 col-span-2 justify-around gap-2">
                                         <div>
                                             {{-- @hasanyrole('admin') --}}
-                                            <button wire:click="fncRoles({{ $reg->id }})"
-                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-yellow-200 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><x-forms.tw_icons
-                                                    name="user-group" class="w-5 h-5 inline-block" />
-                                                {{ __($display['roles']) }}
-                                            </button>
-                                            {{-- @endhasanyrole --}}
-                                        </div>
-                                        <div>
-                                            <!-- Ejemplo de un botón con un icono SVG -->
-                                            <x-forms.tw_boton icon="pencil">Edit</x-forms.tw_boton>
-
-
-                                            {{-- @hasanyrole('admin') --}}
-                                            <button wire:click="fncNewEdit({{ $reg->id }})"
-                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-green-200 text-green-800 dark:bg-green-800 dark:text-green-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><x-forms.tw_icons
-                                                    name="pencil" class="w-5 h-5 inline-block" />
-
-                                                {{ __($display['edit']) }}
-                                            </button>
+                                            <x-forms.tw_boton wire:click="fncRoles({{ $reg->id }})"
+                                                icon="user-group"
+                                                bgColor="orange">{{ __($display['roles']) }}</x-forms.tw_boton>
                                             {{-- @endhasanyrole --}}
                                         </div>
                                         <div>
                                             {{-- @hasanyrole('admin') --}}
-                                            <button wire:click="fncDeleteConfirm({{ $reg->id }})"
-                                                wire:loading.attr="disabled"
-                                                class="inline-block align-middle text-center select-none border font-normal whitespace-no-wrap rounded py-1 px-3 leading-normal no-underline text-xs bg-red-200 text-red-800 dark:bg-red-800 dark:text-red-200 focus:border-2 focus:border-gray-800 dark:focus:border-gray-100"><svg
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                    class="w-5 h-5 inline-flex">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                                </svg>
-
-                                                {{ __($display['delete']) }}
-                                            </button>
+                                            <x-forms.tw_boton wire:click="fncNewEdit({{ $reg->id }})"
+                                                icon="pencil"
+                                                bgColor="green">{{ __($display['edit']) }}</x-forms.tw_boton>
+                                            {{-- @endhasanyrole --}}
+                                        </div>
+                                        <div>
+                                            {{-- @hasanyrole('admin') --}}
+                                            <x-forms.tw_boton wire:click="fncDeleteConfirm({{ $reg->id }}"
+                                                wire:loading.attr="disabled" icon="trash"
+                                                bgColor="red">{{ __($display['delete']) }}</x-forms.tw_boton>
                                             {{-- @endhasanyrole --}}
                                         </div>
                                     </td>

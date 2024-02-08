@@ -26,7 +26,7 @@ class LwMuestraUsuarios extends Component
     public $bRoles = false,
         $roles, // tabla
         $roles_a, // arreglo
-        $rol; // para el filtro
+        $user_rol; // para el filtro
 
     public $permisos;
 
@@ -131,17 +131,18 @@ class LwMuestraUsuarios extends Component
     {
         $collection = User::where('id', '>', 0)
             // ->join('roles', 'role.id', 'user.id')
+            ->search($this->search)
 
-            ->when($this->search, function ($query) {
-                $srch = "%$this->search%";
-                return $query
-                    ->where('id', 'like', $srch)
-                    ->orWhere('name', 'like', $srch)
-                    ->orWhere('email', 'like', $srch);
-                // filtrando por un campo de otra tabla
-                // ->orWhere(User::with('roles')->get('name'), 'like', $srch);
-                // ->whereColumn('role.name', 'like', $srch); // NO FUNCIONA
-            })
+            // ->$this->search, function ($query) {
+            //     $srch = "%$this->search%";
+            //     return $query
+            //         ->where('id', 'like', $srch)
+            //         ->orWhere('name', 'like', $srch)
+            //         ->orWhere('email', 'like', $srch);
+            // filtrando por un campo de otra tabla
+            // ->orWhere(User::with('roles')->get('name'), 'like', $srch);
+            // ->whereColumn('role.name', 'like', $srch); // NO FUNCIONA
+            // })
 
             ->when($this->sortField || $this->sortDir, function ($query) {
                 if ($this->sortField === 'field') {
@@ -156,11 +157,11 @@ class LwMuestraUsuarios extends Component
                 }
             })
 
-            ->when($this->rol, function ($query) {
-                // $srch = "%$this->search%";
-                // dd($this->rol);
-                return $query->Role($this->rol);
-            })
+            // ->when($this->rol, function ($query) {
+            //     // $srch = "%$this->search%";
+            //     // dd($this->rol);
+            //     return $query->Role($this->rol);
+            // })
 
             ->when($this->activeAll, function ($query) {
                 return $query->active($query);
@@ -193,4 +194,10 @@ class LwMuestraUsuarios extends Component
         $this->reset();
         // $this->emit('fncSearchClear');
     }
+
+    protected $queryString = [
+        'search' => ['except' => ''],
+        'sortField' => ['except' => 'id'],
+        'sortDir' => ['except' => 'desc'],
+    ];
 }
