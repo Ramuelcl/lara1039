@@ -1,13 +1,25 @@
 {
+<<<<<<< HEAD
+=======
+    "sortHtmlAttributes": "alphabetical",
+>>>>>>> b6570d67212851f63002f3d3c374f00a60c118a8
     "indentSize": 2,
     "wrapAttributes": "auto",
     "wrapAttributesMinAttrs": 2,
     "wrapLineLength": 120,
     "endWithNewLine": true,
     "noMultipleEmptyLines": true,
+<<<<<<< HEAD
     "useTabs": true,
     "sortTailwindcssClasses": true,
     "sortHtmlAttributes": "alphabetical",
     "noPhpSyntaxCheck": false,
     "noSingleQuote": false
 }
+=======
+    "useTabs": false,
+    "sortTailwindcssClasses": true,
+    "noPhpSyntaxCheck": false,
+    "noSingleQuote": false
+}
+>>>>>>> b6570d67212851f63002f3d3c374f00a60c118a8
