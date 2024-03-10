@@ -13,10 +13,10 @@ class UserController extends Controller
     // version livewire
     public function listar()
     {
-        return view('admin.users.listar');
+        return view('admin.listar');
     }
-
     // fin version livewire
+
     public function index()
     {
         $users = User::all();

@@ -1,13 +1,13 @@
 <!-- views/components/forms/tw_select.blade.php -->
-@props(['idName' => 'idName', 'disabled' => false, 'label' => '', 'multiple' => false])
+@props(['idName', 'disabled' => false, 'label' => '', 'multiple' => false])
 <div>
-    @if ($label)
-        <label for="{{ $idName }}" class="text-sm">{{ $label }}</label>
-    @endif
+  @if ($label)
+    <label class="text-sm" for="{{ $idName }}">{{ $label }}</label>
+  @endif
 
-    <select wire:model.live="{{ $idName }}" {{ $attributes->merge(['class' => 'text-xs mx-2 my-2 rounded-md']) }}
-        {{ $disabled ? 'disabled' : '' }}>
-        <option value="" disabled>{{ __('Select...') }}</option>
-        {{ $slot }}
-    </select>
+  <select {{ $disabled ? 'disabled' : '' }} {{ $attributes->merge(['class' => 'text-xs mx-2 my-2 rounded-md']) }}
+          wire:model.live="{{ $idName }}">
+    <option disabled value=" ">{{ __('Select...') }}</option>
+    {{ $slot }}
+  </select>
 </div>

@@ -16,7 +16,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "laravel/ui": "^4.3",
-        "livewire/livewire": "^3.3",
+        "livewire/livewire": "^3.4",
         "spatie/laravel-permission": "^6.3"
     },
     "require-dev": {
@@ -65,6 +65,7 @@
         }
     },
     "config": {
+        "disable-tls": false,
         "optimize-autoloader": true,
         "preferred-install": "dist",
         "sort-packages": true,

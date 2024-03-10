@@ -1,48 +1,19 @@
 <?php
 
-// use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\{App, Artisan, File, Route};
-use App\Http\controllers\banca\BancaController;
-
-Route::get('/blog', function () {
-    return 'blog';
-})->name('blog');
-
-// se redirige
-// Route::redirect('/ancien', '/');
-// se redirigen en forma permanente
-// Route::redirect('/ancien', '/', 301);
-// Route::permanentRedirect('/ancien', '/');
-// Route::get('/entidades', function () {
-//     return view('livewire.lwentidades');
-// })->name('entidades');
-Route::get('/entidades', 'BancaController@showEntidades')->name('entidades');
-
-// llamo la vista con una función anónima
-Route::get('/', function () {
-    return view('welcome');
-})->name('Home');
-// llamo la vista con parámetros
-Route::get('/user/{id}/{name}', function ($id, $name) {
-    return view('welcome');
-})->name('users.nombre');
-
-// llamo directamente a la vista
-Route::view('/contact', 'Contact')->name('contact');
-// con parámetros
-// Route::view('/contact', 'Contact', ['name' => 'Ramuel'])->name('contact');
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
 
 Route::group([], function () {
-    // Route::get('/prueba', function () {
-    //     return 'prueba';
-    // })->name('prueba');
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
 
     Route::get('/storagelink', function () {
         // Crear el enlace simbólico
         Artisan::call('storage:link');
 
         // Crear directorios si no existen
-        $directories = ['app', 'avatars', 'flags', 'icons'];
+        $directories = ['app', 'avatars', 'flags'];
         foreach ($directories as $directory) {
             $target = '../../storage/app/public/images/' . $directory;
             $shortcut = public_path('storage/images/' . $directory);
@@ -93,11 +64,15 @@ Route::group([], function () {
         }
         App::setLocale($locale);
         session(['locale' => $locale]);
-        // dump(session('locale'));
-        return "Enlaces: \n locale=$locale\n. <a href='/'>Volver a la página principal</a>";
+        return redirect('/');
     });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__ . '/auth.php';
 require __DIR__ . '/admin.php';
-require __DIR__ . '/banca.php';

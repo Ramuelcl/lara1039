@@ -2,7 +2,7 @@
 // config/app_settings.php
 return [
     // sistema
-    'logo' => 'storage/images/app/guzanet.png',
+    'logo' => 'public/images/guzanet.png',
     'nombreEmpresa' => 'Guzanet.',
     'Version' => '1.0.2',
 

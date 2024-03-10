@@ -8,6 +8,7 @@
 // ---
 // ejecutar: composer dump-autoload
 
+use Illuminate\Support\Facades\Storage;
 //
 if (!function_exists('fncGlob_Files')) {
     // TODO: recursividad en directorios
@@ -19,25 +20,25 @@ if (!function_exists('fncGlob_Files')) {
         }
 
         // $FILES = glob($folder.$name."."."{$ext}", GLOB_BRACE);
-        $FILES = glob($folder . $name . "." . $ext);
+        $FILES = glob($folder . $name . '.' . $ext);
         // dump($FILES);
-        $set_limit    = 0;
+        $set_limit = 0;
 
         foreach ($FILES as $key => $file) {
-
-            if ($set_limit && ($set_limit == $limit))    break;
+            if ($set_limit && $set_limit == $limit) {
+                break;
+            }
 
             if (filemtime($file) > $sec) {
-
-                $FILE_LIST[$key]['path']    = substr($file, 0, (strrpos($file, "\\") + 1));
-                $array = explode(".", substr($file, (strrpos($file, "\\") + 1)));
-                $FILE_LIST[$key]['name']    = $array[0];
-                $FILE_LIST[$key]['ext']    = $array[1];
-                $FILE_LIST[$key]['filename']    = $file;
+                $FILE_LIST[$key]['path'] = substr($file, 0, strrpos($file, '\\') + 1);
+                $array = explode('.', substr($file, strrpos($file, '\\') + 1));
+                $FILE_LIST[$key]['name'] = $array[0];
+                $FILE_LIST[$key]['ext'] = $array[1];
+                $FILE_LIST[$key]['filename'] = $file;
 
                 // $FILE_LIST[$key]['name']    = substr( $file, ( strrpos( $file, "\\" ) +1 ) );
-                $FILE_LIST[$key]['size']    = filesize($file);
-                $FILE_LIST[$key]['date']    = date('Y-m-d G:i:s', filemtime($file));
+                $FILE_LIST[$key]['size'] = filesize($file);
+                $FILE_LIST[$key]['date'] = date('Y-m-d G:i:s', filemtime($file));
 
                 if ($set_limit > 0) {
                     $set_limit++;
@@ -97,10 +98,20 @@ if (!function_exists('images')) {
     }
 }
 
-if (!function_exists('productImagePath')) {
-    function productImagePath($image_name)
+if (!function_exists('showImage')) {
+    function showImage($path)
     {
-        return public_path('images/products/' . $image_name);
+        // Obtén la ruta completa del archivo
+        $fullPath = storage_path('app/public/' . $path);
+        // dump($fullPath);
+        // Verifica si el archivo existe
+        if (file_exists($fullPath)) {
+            // Si el archivo existe, genera la URL completa utilizando la función asset
+            return asset('storage/' . $path);
+        } else {
+            // Si el archivo no existe, puedes devolver una URL predeterminada o un mensaje de error
+            return asset('storage/app/public/images/avatars/default.png'); // Cambia esto según tus necesidades
+        }
     }
 }
 
@@ -141,21 +152,7 @@ if (!function_exists('fncCambiaCaracteresEspeciales')) {
     function fncCambiaCaracteresEspeciales($string, array $arreglo = [])
     {
         if (!count($arreglo)) {
-            $arreglo = array(
-                ['á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'],
-                ['a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'],
-                ['é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'],
-                ['e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'],
-                ['í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'],
-                ['i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'],
-                ['ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'],
-                ['o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'],
-                ['ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'],
-                ['u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'],
-                ['ñ', 'Ñ', 'ç', 'Ç'], ['n', 'N', 'c', 'C'],
-                ['|', '!', '·', "$", '%', '&', '/', '(', ')', '?', "'", '¡', '¿', '[', '^', '<code>', ']', '+', '}', '{', '¨', '´', '>', '<', ';', ',', ':', ' ', '"'],
-                ['']
-            );
+            $arreglo = [['á', 'à', 'ä', 'â', 'ª', 'Á', 'À', 'Â', 'Ä'], ['a', 'a', 'a', 'a', 'a', 'A', 'A', 'A', 'A'], ['é', 'è', 'ë', 'ê', 'É', 'È', 'Ê', 'Ë'], ['e', 'e', 'e', 'e', 'E', 'E', 'E', 'E'], ['í', 'ì', 'ï', 'î', 'Í', 'Ì', 'Ï', 'Î'], ['i', 'i', 'i', 'i', 'I', 'I', 'I', 'I'], ['ó', 'ò', 'ö', 'ô', 'Ó', 'Ò', 'Ö', 'Ô'], ['o', 'o', 'o', 'o', 'O', 'O', 'O', 'O'], ['ú', 'ù', 'ü', 'û', 'Ú', 'Ù', 'Û', 'Ü'], ['u', 'u', 'u', 'u', 'U', 'U', 'U', 'U'], ['ñ', 'Ñ', 'ç', 'Ç'], ['n', 'N', 'c', 'C'], ['|', '!', '·', "$", '%', '&', '/', '(', ')', '?', "'", '¡', '¿', '[', '^', '<code>', ']', '+', '}', '{', '¨', '´', '>', '<', ';', ',', ':', ' ', '"'], ['']];
             //función para limpiar strings
             for ($i = 0; $i < count($arreglo) - 1; $i = $i + 2) {
                 $string = str_replace($arreglo[$i], $arreglo[$i + 1], $string);
@@ -186,19 +183,13 @@ if (!function_exists('fncCambiaCaracteresEspeciales')) {
         function fncElimCaracterDuplicado($str)
         {
             return implode(
-                " ",
-                array_map(
-                    function ($palabra) {
-                        preg_match_all('/./u', $palabra, $matches);
-                        return array_reduce(
-                            $matches[0],
-                            function ($acum, $letra) {
-                                return $acum == null || ($acum[-1] != $letra && substr($acum, -2) != $letra) ? $acum . $letra : $acum;
-                            }
-                        );
-                    },
-                    explode(" ", preg_replace('/\s+/', ' ', $str))
-                )
+                ' ',
+                array_map(function ($palabra) {
+                    preg_match_all('/./u', $palabra, $matches);
+                    return array_reduce($matches[0], function ($acum, $letra) {
+                        return $acum == null || ($acum[-1] != $letra && substr($acum, -2) != $letra) ? $acum . $letra : $acum;
+                    });
+                }, explode(' ', preg_replace('/\s+/', ' ', $str))),
             );
         }
     }

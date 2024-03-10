@@ -13,27 +13,34 @@ class Livemenu extends Component
     public $submenu;
     public $currentLocale;
     public $table = 'menus';
-    public function render()
-    {
-        if ($this->submenu) {
-            $this->menus = $this->searchSubMenu($this->submenu);
-        }
-        return view('livewire.livemenu');
-    }
 
-    public function mount($orientation = true, $submenu = null)
+    public function mount($name = null, $orientation = true, $submenu = null)
     {
-        $menus = Menu::where('id', '>', 1)
-            ->whereNull('parent_id')
-            ->where('is_active', true)
-            ->get()
-            ->each(function ($menu) {
-                if ($menu->url) {
-                    $menu->url = strtolower($menu->url);
-                    $menu->route = str_replace('/', '.', ltrim($menu->url, '/'));
-                }
-            })
-            ->toArray();
+        if ($name == null) {
+            $menus = Menu::where('id', '>', 1)
+                ->whereNull('parent_id')
+                ->where('is_active', true)
+                ->get()
+                ->each(function ($menu) {
+                    if ($menu->url) {
+                        $menu->url = strtolower($menu->url);
+                        $menu->route = str_replace('/', '.', ltrim($menu->url, '/'));
+                    }
+                })
+                ->toArray();
+        } else {
+            $menus = Menu::where('name', '=', $name)
+                ->where('parent_id', '0')
+                ->where('is_active', true)
+                ->get()
+                ->each(function ($menu) {
+                    if ($menu->url) {
+                        $menu->url = strtolower($menu->url);
+                        $menu->route = str_replace('/', '.', ltrim($menu->url, '/'));
+                    }
+                })
+                ->toArray();
+        }
 
         $this->menus = array_map(function ($menu) {
             $submenu = Menu::where('parent_id', $menu['id'])
@@ -54,10 +61,20 @@ class Livemenu extends Component
 
             return $menu;
         }, $menus);
-
+        // if ($name) {
+        //     dump([$name, $this->menus]);
+        // }
         // dd($this->menus);
         $this->toggleOrientation($orientation);
         $this->submenu = $submenu;
+    }
+
+    public function render()
+    {
+        if ($this->submenu) {
+            $this->menus = $this->searchSubMenu($this->submenu);
+        }
+        return view('livewire.livemenu');
     }
 
     public function toggleOrientation($orientation)
