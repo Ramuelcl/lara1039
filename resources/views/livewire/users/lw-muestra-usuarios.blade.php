@@ -23,6 +23,7 @@
                 </div>
               @endif
 
+<<<<<<< HEAD
               {{-- {{ $roles }} --}}
               @if ($bRoles || true)
                 <x-forms.tw_select idName="user_rol">
@@ -32,6 +33,17 @@
                   @endforeach
                 </x-forms.tw_select>
               @endif
+=======
+                            {{-- {{ $roles }} --}}
+                            @if ($bRoles || true)
+                                <x-forms.tw_select idName="user_rol">
+                                    <option value="">Todos</option>
+                                    @foreach ($roles_a as $role)
+                                        <option>{{ $role }}</option>
+                                    @endforeach
+                                </x-forms.tw_select>
+                            @endif
+>>>>>>> b6570d67212851f63002f3d3c374f00a60c118a8
 
               {{-- {{ $activo }} --}}
               @if ($bActive)
@@ -50,6 +62,7 @@
             @endif
           </div>
 
+<<<<<<< HEAD
           <table class="min-w-full divide-y divide-gray-200">
             @foreach ($fields as $field)
               @if ($field['table']['display'])
@@ -105,6 +118,82 @@
                             <!-- // formato con decimales -->
                             {{-- -{{ number_format($key + 1, 0, ',', '.') }} --}}
                           @break
+=======
+                    <table class="min-w-full divide-y divide-gray-200">
+                        @foreach ($fields as $field)
+                            @if ($field['table']['display'])
+                                @php
+                                    // valida el campo a ordenar; si existe le pone cursor-pointer
+                                    $orden = in_array($field['name'], $fieldsOrden) ? $field['name'] : null;
+                                @endphp
+                                @if ($field['name'] == 'is_active')
+                                    <th scope="col"
+                                        class="bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                        {{-- @if (!$activeAll) --}}
+                                        {{ __($field['table']['titre']) }}
+                                        {{-- @endif --}}
+                                    </th>
+                                @else
+                                    <th wire:click="fncOrden('{{ $orden }}')" scope="col"
+                                        class="{{ $orden ? 'cursor-pointer' : '' }} bg-gray-50 px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500">
+                                        {{ __($field['table']['titre']) }}
+                                        <x-forms.tw_iconSort campo="{{ $field['name'] }}" :sortField="$sortField"
+                                            :sortDir="$sortDir" />
+                                    </th>
+                                @endif
+                            @endif
+                        @endforeach
+                        <th class="flex justify-between px-6 py-3 col-span-2 gap-2">
+                            <div>
+                                {{ __('actions') }}
+                                {{-- @hasanyrole('admin') --}}
+                            </div>
+                            <div class="justify-end">
+                                <x-forms.tw_boton wire:click="fncNewEdit(0)" icon="plus"
+                                    bgColor="blue">{{ __($display['new']) }}</x-forms.tw_boton>
+                                {{-- <button wire:click="fncNewEdit(0)"
+                                    class="button-primary text-xs inline-block"><x-forms.tw_icons name="plus"
+                                        class="w-5 h-5" />{{ __($display['new']) }}
+                                </button> --}}
+                                {{-- @endhasanyrole --}}
+                            </div>
+                        </th>
+                        <tbody>
+                            @foreach ($users as $key => $reg)
+                                @php
+                                    $cl = ($key + 1) % 2 === 0 ? '50' : '400';
+                                @endphp
+                                <tr
+                                    class="bg-gray-{{ $cl }} dark:bg-gray-{{ $cl == '50' ? $cl + 450 : $cl + 400 }} border-b hover:bg-gray-300 dark:border-gray-700 dark:hover:bg-gray-600">
+                                    @foreach ($fields as $field)
+                                        @if ($field['table']['display'])
+                                            <td class="whitespace-nowrap px-2 py-4 text-sm text-gray-500">
+                                                @switch($field['name'])
+                                                    @case('id')
+                                                        <!-- // relleno de ceros -->
+                                                        {{ sprintf('%05d', $reg->id) }}
+                                                        <!-- // formato con decimales -->
+                                                        {{-- -{{ number_format($key + 1, 0, ',', '.') }} --}}
+                                                    @break
+
+                                                    @case('profile_photo_path')
+                                                        @if (Storage::exists($reg->profile_photo_path))
+                                                            <img src="{{ Storage::url($reg->profile_photo_path) }}"
+                                                                class="w-5 rounded-full" alt="avatar">
+                                                        @else
+                                                            <img src="{{ Storage::url('public/images/avatars/default.png') }}"
+                                                                class="w-5 rounded-full" alt="avatar">
+                                                        @endif
+                                                    @break
+
+                                                    @case('name')
+                                                        {{ $reg->name }}
+                                                    @break
+
+                                                    @case('role')
+                                                        {{ implode(', ', $reg->getRoleNames()->toArray()) }}
+                                                    @break
+>>>>>>> b6570d67212851f63002f3d3c374f00a60c118a8
 
                           @case('profile_photo_path')
                             <img alt="def" class="w-5 rounded-md" src="{{ $reg->imageUrl() }}">
@@ -114,6 +203,7 @@
                             {{ $reg->name }}
                           @break
 
+<<<<<<< HEAD
                           @case('role')
                             {{ implode(', ', $reg->getRoleNames()->toArray()) }}
                           @break
@@ -140,6 +230,52 @@
                       <x-forms.tw_boton bgColor="orange" icon="user-group"
                                         wire:click="fncRoles({{ $reg->id }})">{{ __($display['roles']) }}</x-forms.tw_boton>
                       {{-- @endhasanyrole --}}
+=======
+                                                    @default
+                                                        Default case...
+                                                @endswitch
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                    <td class="flex px-6 py-4 col-span-2 justify-around gap-2">
+                                        <div>
+                                            {{-- @hasanyrole('admin') --}}
+                                            <x-forms.tw_boton wire:click="fncRoles({{ $reg->id }})"
+                                                icon="user-group"
+                                                bgColor="orange">{{ __($display['roles']) }}</x-forms.tw_boton>
+                                            {{-- @endhasanyrole --}}
+                                        </div>
+                                        <div>
+                                            {{-- @hasanyrole('admin') --}}
+                                            <x-forms.tw_boton wire:click="fncNewEdit({{ $reg->id }})"
+                                                icon="pencil"
+                                                bgColor="green">{{ __($display['edit']) }}</x-forms.tw_boton>
+                                            {{-- @endhasanyrole --}}
+                                        </div>
+                                        <div>
+                                            {{-- @hasanyrole('admin') --}}
+                                            <x-forms.tw_boton wire:click="fncDeleteConfirm({{ $reg->id }}"
+                                                wire:loading.attr="disabled" icon="trash"
+                                                bgColor="red">{{ __($display['delete']) }}</x-forms.tw_boton>
+                                            {{-- @endhasanyrole --}}
+                                        </div>
+                                    </td>
+
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div
+                        class="flex text-gray-500 bg-blue-100 px-4 py-3 items-center justify-between border-t border-gray-200 sm:px-6">
+                        <div>
+                            <select wire:model.live="collectionView" class="rounded-md text-xs">
+                                @foreach ($collectionViews as $collectionView)
+                                    <option value="{{ $collectionView }}">{{ $collectionView }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class=""> {{ $users->links() }}</div>
+>>>>>>> b6570d67212851f63002f3d3c374f00a60c118a8
                     </div>
                     <div>
                       {{-- @hasanyrole('admin') --}}
