@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified']) //'verified-role:admin'
         Route::get('/users/l', [UserController::class, 'listar'])->name('users.listar');
 
         // Route::get('/users/input/{parametro}', LwTablas::class)->name('users.input');
-        Route::get('/users/input/{parametro}', \App\Http\Livewire\Components\LwTablas::class)->name('users.input');
+        // Route::get('/users/input/{parametro}', \App\Http\Livewire\Components\LwTablas::class)->name('users.input');
 
         Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');

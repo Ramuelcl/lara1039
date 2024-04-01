@@ -4,7 +4,7 @@
       <div class="overflow-hidden bg-white p-2 shadow-sm sm:rounded-lg">
         <div class="flex p-2">
           <a class="rounded-md bg-green-700 px-4 py-2 text-slate-100 hover:bg-green-500"
-             href="{{ route('admin.admin.users.index') }}">Users Index</a>
+             href="{{ route('admin.users.index') }}">Users Index</a>
         </div>
         <div class="flex flex-col bg-slate-100 p-2">
           <div>User Name: {{ $user->name }}</div>

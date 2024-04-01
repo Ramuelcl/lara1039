@@ -46,7 +46,7 @@
       {{ __('List of Roles') }}
     </x-nav-link>
 
-    <x-nav-link :active="request()->routeIs('admin.users.input')" href="{{ route('admin.users.input') }}">
+    {{-- <x-nav-link :active="request()->routeIs('admin.users.input')" href="{{ route('admin.users.input') }}">
       <x-slot name="icon">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg">
@@ -55,6 +55,6 @@
         </svg>
       </x-slot>
       {{ __('prueba Input Tabla') }}
-    </x-nav-link>
+    </x-nav-link> --}}
   </nav>
 </div>
